@@ -1,6 +1,6 @@
 /*
- * @file Scratch.h
- * @brief Scratch class wrapper for hs_scratch_t for HyperScan
+ * @file BlockScanner.cpp
+ * @brief BlockScanner class currently provides static functions but may become an object in the future. Provides the hs_scan functionality.
  * @author Ludvik Jerabek
  * @version 1.0 04/08/2021
  *
@@ -21,38 +21,18 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef _HYPERSCAN_SCRATCH_H
-#define _HYPERSCAN_SCRATCH_H
+#include "BlockScanner.h"
+#include "BlockDatabase.h"
+#include "Scratch.h"
 
-#include <hs/hs.h>
-#include <memory>
-
-namespace HyperScan {
-    class Database;
-    class Scratch {
-        friend class BlockScanner;
-        friend class StreamScanner;
-    public:
-        explicit Scratch(const Database& db);
-        Scratch(Scratch&& scratch) = default;
-        Scratch& operator=(Scratch&& scratch) = default;
-        Scratch (const Scratch& scratch) = delete;
-        Scratch& operator= (const Scratch& scratch) = delete;
-        ~Scratch() = default;
-    public:
-        void Alloc(const Database& db);
-        Scratch Clone();
-    private:
-        // Used by Scratch object to clone
-        explicit Scratch(hs_scratch_t* scratch);
-    private:
-        struct Deleter {
-            void operator() (hs_scratch_t* db) {
-                hs_free_scratch(db);
-            }
-        };
-        std::unique_ptr<hs_scratch_t,Deleter> _scratch;
-    };
+namespace HyperScan{
+    hs_error_t BlockScanner::Scan(BlockDatabase &db, Scratch &scratch, IMatcher &match, const std::vector<char>& data) {
+        return hs_scan(db._db.get(), data.data(), data.size(), 0, scratch._scratch.get(), IScanner::match_event, &match);
+    }
+    hs_error_t BlockScanner::Scan(BlockDatabase &db, Scratch &scratch, IMatcher &match, const std::string& data) {
+        return hs_scan(db._db.get(), data.data(), data.size(), 0, scratch._scratch.get(), IScanner::match_event, &match);
+    }
+    hs_error_t BlockScanner::Scan(BlockDatabase &db, Scratch &scratch, IMatcher &match, const char* buffer , unsigned int length) {
+        return hs_scan(db._db.get(), buffer , length , 0, scratch._scratch.get(), IScanner::match_event, &match);
+    }
 }
-
-#endif //BLPARSER_HS_SCRATCH_H

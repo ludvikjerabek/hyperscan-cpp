@@ -25,7 +25,7 @@
 #include "Pattern.h"
 #include <utility>
 #include "BlockDatabase.h"
-#include "VectoredDatabase.h"
+#include "VectorDatabase.h"
 #include "StreamDatabase.h"
 #include "ExpressionInfo.h"
 #include "PlatformInfo.h"
@@ -42,10 +42,10 @@
     void Pattern::SetId(unsigned int id) { _id = id; }
     ExpressionInfo Pattern::GetExpressionInfo(){ return ExpressionInfo(*this); }
     ExpressionInfo Pattern::GetExpressionInfo(const ExtendedExpressionContext& ext){ return ExpressionInfo(*this , ext); }
-    BlockDatabase Pattern::GetBlockDatabase(){ return BlockDatabase(*this); }
-    VectoredDatabase Pattern::GetVectoredDatabase(){ return VectoredDatabase(*this); }
-    StreamDatabase Pattern::GetStreamDatabase(){ return StreamDatabase(*this);}
-    BlockDatabase Pattern::GetBlockDatabase(const PlatformInfo& pi){ return BlockDatabase(*this , pi); }
-    VectoredDatabase Pattern::GetVectoredDatabase(const PlatformInfo& pi){ return VectoredDatabase(*this , pi); }
-    StreamDatabase Pattern::GetStreamDatabase(const PlatformInfo& pi){ return StreamDatabase(*this, pi);}
+    BlockDatabase Pattern::GetBlockDatabase( Database::Horizon horizon ){ return BlockDatabase(*this, horizon ); }
+    VectorDatabase Pattern::GetVectorDatabase( Database::Horizon horizon ){ return VectorDatabase(*this, horizon ); }
+    StreamDatabase Pattern::GetStreamDatabase( Database::Horizon horizon ){ return StreamDatabase(*this, horizon );}
+    BlockDatabase Pattern::GetBlockDatabase(const PlatformInfo& pi, Database::Horizon horizon){ return BlockDatabase(*this , pi, horizon ); }
+    VectorDatabase Pattern::GetVectorDatabase(const PlatformInfo& pi, Database::Horizon horizon){ return VectorDatabase(*this , pi, horizon ); }
+    StreamDatabase Pattern::GetStreamDatabase(const PlatformInfo& pi, Database::Horizon horizon){ return StreamDatabase(*this, pi, horizon );}
 }

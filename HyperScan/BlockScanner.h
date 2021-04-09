@@ -1,6 +1,6 @@
 /*
- * @file Scanner.h
- * @brief Scanner class currently provides static functions but may become an object in the future. Provides the hs_scan and hs_scan_vector functionality.
+ * @file BlockScanner.h
+ * @brief BlockScanner class currently provides static functions but may become an object in the future. Provides the hs_scan functionality.
  * @author Ludvik Jerabek
  * @version 1.0 04/08/2021
  *
@@ -31,15 +31,12 @@
 
 namespace HyperScan {
     class BlockDatabase;
-    class VectoredDatabase;
     class Scratch;
-    class Scanner : public IScanner {
+    class BlockScanner : public IScanner {
     public:
         static hs_error_t Scan(BlockDatabase &db, Scratch &scratch, IMatcher &match, const std::vector<char>& data);
         static hs_error_t Scan(BlockDatabase &db, Scratch &scratch, IMatcher &match, const std::string& data);
         static hs_error_t Scan(BlockDatabase &db, Scratch &scratch, IMatcher &match, const char* buffer , unsigned int length);
-        static hs_error_t Scan(VectoredDatabase &db, Scratch &scratch, IMatcher &match, const std::vector<std::vector<char>>& blocks);
-        static hs_error_t Scan(VectoredDatabase &db, Scratch &scratch, IMatcher &match, const std::vector<std::string>& blocks);
     };
 }
 #endif //_HYPERSCAN_SCANNER_H

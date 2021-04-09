@@ -22,10 +22,9 @@
  */
 
 #include "Literal.h"
-
 #include <utility>
 #include "BlockDatabase.h"
-#include "VectoredDatabase.h"
+#include "VectorDatabase.h"
 #include "StreamDatabase.h"
 #include "PlatformInfo.h"
 
@@ -39,10 +38,10 @@ namespace HyperScan {
     void Literal::SetFlags(unsigned int flags) { _flags = flags; }
     unsigned int Literal::GetId() const { return _id; }
     void Literal::SetId(unsigned int id) { _id = id; }
-    BlockDatabase Literal::GetBlockDatabase(){ return BlockDatabase(*this); }
-    VectoredDatabase Literal::GetVectoredDatabase(){ return VectoredDatabase(*this); }
-    StreamDatabase Literal::GetStreamDatabase(){ return StreamDatabase(*this);}
-    BlockDatabase Literal::GetBlockDatabase(const PlatformInfo& pi){ return BlockDatabase(*this , pi); }
-    VectoredDatabase Literal::GetVectoredDatabase(const PlatformInfo& pi){ return VectoredDatabase(*this , pi); }
-    StreamDatabase Literal::GetStreamDatabase(const PlatformInfo& pi){ return StreamDatabase(*this, pi);}
+    BlockDatabase Literal::GetBlockDatabase( Database::Horizon horizon ){ return BlockDatabase(*this, horizon); }
+    VectorDatabase Literal::GetVectorDatabase( Database::Horizon horizon ){ return VectorDatabase(*this, horizon); }
+    StreamDatabase Literal::GetStreamDatabase( Database::Horizon horizon ){ return StreamDatabase(*this, horizon);}
+    BlockDatabase Literal::GetBlockDatabase(const PlatformInfo& pi, Database::Horizon horizon){ return BlockDatabase(*this , pi, horizon); }
+    VectorDatabase Literal::GetVectorDatabase(const PlatformInfo& pi, Database::Horizon horizon){ return VectorDatabase(*this , pi, horizon); }
+    StreamDatabase Literal::GetStreamDatabase(const PlatformInfo& pi, Database::Horizon horizon){ return StreamDatabase(*this, pi, horizon);}
 }

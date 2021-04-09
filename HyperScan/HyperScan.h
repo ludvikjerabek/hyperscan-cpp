@@ -34,9 +34,9 @@
 #include "ExpressionInfo.h"
 #include "BlockDatabase.h"
 #include "StreamDatabase.h"
-#include "VectoredDatabase.h"
+#include "VectorDatabase.h"
 #include "Scratch.h"
-#include "Scanner.h"
+#include "BlockScanner.h"
 #include "StreamScanner.h"
 #include "ExtendedExpressionContext.h"
 

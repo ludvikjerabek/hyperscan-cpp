@@ -69,7 +69,7 @@ int main() {
     file.read(block.data(), size);
     // Scan the block of data
 
-    HyperScan::Scanner::Scan(pattern_db,scratch,matcher,block);
+    HyperScan::BlockScanner::Scan(pattern_db,scratch,matcher,block);
 
     matcher.Dump();
 

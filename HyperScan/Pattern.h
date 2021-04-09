@@ -26,12 +26,13 @@
 #define _HYPERSCAN_PATTERN_H
 
 #include <hs/hs.h>
+#include "Database.h"
 #include <string>
 #include <memory>
 
 namespace HyperScan {
     class BlockDatabase;
-    class VectoredDatabase;
+    class VectorDatabase;
     class StreamDatabase;
     class ExpressionInfo;
     class PlatformInfo;
@@ -67,12 +68,12 @@ class Pattern {
         void SetId(unsigned int id);
         [[nodiscard]] ExpressionInfo GetExpressionInfo();
         [[nodiscard]] ExpressionInfo GetExpressionInfo(const ExtendedExpressionContext& ext);
-        [[nodiscard]] BlockDatabase GetBlockDatabase();
-        [[nodiscard]] VectoredDatabase GetVectoredDatabase();
-        [[nodiscard]] StreamDatabase GetStreamDatabase();
-        [[nodiscard]] BlockDatabase GetBlockDatabase(const PlatformInfo& pi);
-        [[nodiscard]] VectoredDatabase GetVectoredDatabase(const PlatformInfo& pi);
-        [[nodiscard]] StreamDatabase GetStreamDatabase(const PlatformInfo& pi);
+        [[nodiscard]] BlockDatabase GetBlockDatabase( Database::Horizon horizon = Database::Horizon::NONE  );
+        [[nodiscard]] VectorDatabase GetVectorDatabase( Database::Horizon horizon = Database::Horizon::NONE );
+        [[nodiscard]] StreamDatabase GetStreamDatabase( Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] BlockDatabase GetBlockDatabase(const PlatformInfo& pi, Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] VectorDatabase GetVectorDatabase(const PlatformInfo& pi, Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] StreamDatabase GetStreamDatabase(const PlatformInfo& pi, Database::Horizon horizon = Database::Horizon::NONE);
     private:
         std::string _pattern;
         unsigned int _flags;

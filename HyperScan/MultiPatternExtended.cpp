@@ -23,7 +23,7 @@
 
 #include "MultiPatternExtended.h"
 #include "BlockDatabase.h"
-#include "VectoredDatabase.h"
+#include "VectorDatabase.h"
 #include "StreamDatabase.h"
 #include "ExtendedExpressionContext.h"
 #include "PlatformInfo.h"
@@ -47,10 +47,10 @@ namespace HyperScan {
         _patterns.clear();
         _exts.clear();
     }
-    BlockDatabase MultiPatternExtended::GetBlockDatabase(){ return BlockDatabase(*this); }
-    VectoredDatabase MultiPatternExtended::GetVectoredDatabase(){ return VectoredDatabase(*this); }
-    StreamDatabase MultiPatternExtended::GetStreamDatabase(){ return StreamDatabase(*this);}
-    BlockDatabase MultiPatternExtended::GetBlockDatabase(const PlatformInfo& pi){ return BlockDatabase(*this , pi); }
-    VectoredDatabase MultiPatternExtended::GetVectoredDatabase(const PlatformInfo& pi){ return VectoredDatabase(*this , pi); }
-    StreamDatabase MultiPatternExtended::GetStreamDatabase(const PlatformInfo& pi){ return StreamDatabase(*this, pi);}
+    BlockDatabase MultiPatternExtended::GetBlockDatabase(Database::Horizon horizon){ return BlockDatabase(*this, horizon); }
+    VectorDatabase MultiPatternExtended::GetVectorDatabase(Database::Horizon horizon){ return VectorDatabase(*this, horizon); }
+    StreamDatabase MultiPatternExtended::GetStreamDatabase(Database::Horizon horizon){ return StreamDatabase(*this, horizon);}
+    BlockDatabase MultiPatternExtended::GetBlockDatabase(const PlatformInfo& pi,Database::Horizon horizon){ return BlockDatabase(*this , pi, horizon); }
+    VectorDatabase MultiPatternExtended::GetVectorDatabase(const PlatformInfo& pi,Database::Horizon horizon){ return VectorDatabase(*this , pi, horizon); }
+    StreamDatabase MultiPatternExtended::GetStreamDatabase(const PlatformInfo& pi,Database::Horizon horizon){ return StreamDatabase(*this, pi, horizon);}
 }

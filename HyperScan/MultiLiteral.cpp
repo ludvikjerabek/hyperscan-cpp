@@ -23,7 +23,7 @@
 
 #include "MultiLiteral.h"
 #include "BlockDatabase.h"
-#include "VectoredDatabase.h"
+#include "VectorDatabase.h"
 #include "StreamDatabase.h"
 #include "PlatformInfo.h"
 
@@ -38,10 +38,10 @@ namespace HyperScan {
         _ids.clear();
         _literals.clear();
     }
-    BlockDatabase MultiLiteral::GetBlockDatabase(){ return BlockDatabase(*this); }
-    VectoredDatabase MultiLiteral::GetVectoredDatabase(){ return VectoredDatabase(*this); }
-    StreamDatabase MultiLiteral::GetStreamDatabase(){ return StreamDatabase(*this);}
-    BlockDatabase MultiLiteral::GetBlockDatabase(const PlatformInfo& pi){ return BlockDatabase(*this , pi); }
-    VectoredDatabase MultiLiteral::GetVectoredDatabase(const PlatformInfo& pi){ return VectoredDatabase(*this , pi); }
-    StreamDatabase MultiLiteral::GetStreamDatabase(const PlatformInfo& pi){ return StreamDatabase(*this, pi);}
+    BlockDatabase MultiLiteral::GetBlockDatabase(Database::Horizon horizon){ return BlockDatabase(*this,horizon); }
+    VectorDatabase MultiLiteral::GetVectorDatabase(Database::Horizon horizon){ return VectorDatabase(*this,horizon); }
+    StreamDatabase MultiLiteral::GetStreamDatabase(Database::Horizon horizon){ return StreamDatabase(*this,horizon);}
+    BlockDatabase MultiLiteral::GetBlockDatabase(const PlatformInfo& pi,Database::Horizon horizon){ return BlockDatabase(*this , pi, horizon); }
+    VectorDatabase MultiLiteral::GetVectorDatabase(const PlatformInfo& pi,Database::Horizon horizon){ return VectorDatabase(*this , pi, horizon); }
+    StreamDatabase MultiLiteral::GetStreamDatabase(const PlatformInfo& pi,Database::Horizon horizon){ return StreamDatabase(*this, pi, horizon);}
 }

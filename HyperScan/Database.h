@@ -1,6 +1,6 @@
 /*
  * @file Database.h
- * @brief Database base class. Wrapper for hs_database_t for HyperScan
+ * @brief Database base class. Wrapper for hs_database_t for HyperScan. This class should not be constructed directly.
  * @author Ludvik Jerabek
  * @version 1.0 04/08/2021
  *
@@ -38,7 +38,8 @@ namespace HyperScan {
     class PlatformInfo;
     class Database {
         friend class Scratch;
-        friend class Scanner;
+        friend class BlockScanner;
+        friend class VectorScanner;
         friend class StreamScanner;
     public:
         enum Mode : unsigned int {
@@ -46,22 +47,30 @@ namespace HyperScan {
             BLOCK = HS_MODE_BLOCK,
             VECTORED = HS_MODE_VECTORED
         };
+        // Separated horizon from the Mode since mode is passed as part of derived type.
+        enum Horizon : unsigned int {
+            NONE = 0,
+            LARGE = HS_MODE_SOM_HORIZON_LARGE,
+            MEDIUM = HS_MODE_SOM_HORIZON_MEDIUM,
+            SMALL = HS_MODE_SOM_HORIZON_SMALL
+        };
+    protected:
+        explicit Database(const MultiPattern& mp ,Mode mode, Horizon horizon);
+        explicit Database(const MultiPattern& mp ,Mode mode, const PlatformInfo& pi, Horizon horizon );
+        explicit Database(const MultiPatternExtended& mpe , Mode mode, Horizon horizon);
+        explicit Database(const MultiPatternExtended& mpe , Mode mode, const PlatformInfo& pi, Horizon horizon );
+        explicit Database(const MultiLiteral& ml ,Mode mode, Horizon horizon);
+        explicit Database(const MultiLiteral& ml ,Mode mode, const PlatformInfo& pi, Horizon horizon );
+        explicit Database(const Pattern& sp ,Mode mode, Horizon horizon);
+        explicit Database(const Pattern& sp ,Mode mode, const PlatformInfo& pi, Horizon horizon );
+        explicit Database(const Literal& sl ,Mode mode, Horizon horizon);
+        explicit Database(const Literal& sl ,Mode mode, const PlatformInfo& pi, Horizon horizon );
+        Database(Database&& db) = default;
+        Database& operator=(Database&& db) = default;
     public:
-        explicit Database(const MultiPattern& mp ,Mode mode);
-        explicit Database(const MultiPattern& mp ,Mode mode, const PlatformInfo& pi );
-        explicit Database(const MultiPatternExtended& mpe , Mode mode);
-        explicit Database(const MultiPatternExtended& mpe , Mode mode, const PlatformInfo& pi );
-        explicit Database(const MultiLiteral& ml ,Mode mode);
-        explicit Database(const MultiLiteral& ml ,Mode mode, const PlatformInfo& pi );
-        explicit Database(const Pattern& sp ,Mode mode);
-        explicit Database(const Pattern& sp ,Mode mode, const PlatformInfo& pi );
-        explicit Database(const Literal& sl ,Mode mode);
-        explicit Database(const Literal& sl ,Mode mode, const PlatformInfo& pi );
         Database() = delete;
         Database (const Database& db) = delete;
         Database& operator= (const Database& db) = delete;
-        Database(Database&& db) = default;
-        Database& operator=(Database&& db) = default;
         ~Database() = default;
     public:
         [[nodiscard]] Scratch GetScratch() const;

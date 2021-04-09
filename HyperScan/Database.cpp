@@ -33,14 +33,14 @@
 #include <algorithm>
 
 namespace HyperScan {
-    Database::Database(const MultiPattern &mp, Mode mode) : _db(nullptr) {
+    Database::Database(const MultiPattern &mp, Mode mode, Horizon horizon) : _db(nullptr) {
         std::vector<const char *> patterns;
         for (const auto &pattern : mp._patterns) {
             patterns.push_back(pattern.c_str());
         }
         hs_compile_error_t *error = nullptr;
         hs_database_t *db = nullptr;
-        hs_error_t hs_code = hs_compile_multi(patterns.data(), mp._flags.data(), mp._ids.data(), patterns.size(), mode, nullptr, &db, &error);
+        hs_error_t hs_code = hs_compile_multi(patterns.data(), mp._flags.data(), mp._ids.data(), patterns.size(), mode | horizon, nullptr, &db, &error);
         _db.reset(db);
         if (hs_code != HS_SUCCESS) {
             std::string e = "Call to hs_compile_multi failed";
@@ -53,14 +53,14 @@ namespace HyperScan {
             throw DatabaseException(e, hs_error, hs_code);
         }
     }
-    Database::Database(const MultiPattern &mp, Mode mode, const PlatformInfo& pi) : _db(nullptr) {
+    Database::Database(const MultiPattern &mp, Mode mode, const PlatformInfo& pi, Horizon horizon) : _db(nullptr) {
         std::vector<const char *> patterns;
         for (const auto &pattern : mp._patterns) {
             patterns.push_back(pattern.c_str());
         }
         hs_compile_error_t *error = nullptr;
         hs_database_t *db = nullptr;
-        hs_error_t hs_code = hs_compile_multi(patterns.data(), mp._flags.data(), mp._ids.data(), patterns.size(), mode, &pi._info, &db, &error);
+        hs_error_t hs_code = hs_compile_multi(patterns.data(), mp._flags.data(), mp._ids.data(), patterns.size(), mode | horizon, &pi._info, &db, &error);
         _db.reset(db);
         if (hs_code != HS_SUCCESS) {
             std::string e = "Call to hs_compile_multi failed";
@@ -73,7 +73,7 @@ namespace HyperScan {
             throw DatabaseException(e, hs_error, hs_code);
         }
     }
-    Database::Database(const MultiPatternExtended &mpe, Mode mode) : _db(nullptr) {
+    Database::Database(const MultiPatternExtended &mpe, Mode mode, Horizon horizon) : _db(nullptr) {
         std::vector<const char *> patterns;
         for (const auto &pattern : mpe._patterns) {
             patterns.push_back(pattern.c_str());
@@ -84,7 +84,7 @@ namespace HyperScan {
         }
         hs_compile_error_t *error = nullptr;
         hs_database_t *db = nullptr;
-        hs_error_t hs_code = hs_compile_ext_multi(patterns.data(), mpe._flags.data(), mpe._ids.data(), exts.data(), patterns.size(), mode, nullptr, &db, &error);
+        hs_error_t hs_code = hs_compile_ext_multi(patterns.data(), mpe._flags.data(), mpe._ids.data(), exts.data(), patterns.size(), mode | horizon, nullptr, &db, &error);
         _db.reset(db);
         if (hs_code != HS_SUCCESS) {
             std::string e = "Call to hs_compile_ext_multi failed";
@@ -97,7 +97,7 @@ namespace HyperScan {
             throw DatabaseException(e, hs_error, hs_code);
         }
     }
-    Database::Database(const MultiPatternExtended &mpe, Mode mode, const PlatformInfo& pi ) : _db(nullptr) {
+    Database::Database(const MultiPatternExtended &mpe, Mode mode, const PlatformInfo& pi, Horizon horizon) : _db(nullptr) {
         std::vector<const char *> patterns;
         for (const auto &pattern : mpe._patterns) {
             patterns.push_back(pattern.c_str());
@@ -108,7 +108,7 @@ namespace HyperScan {
         }
         hs_compile_error_t *error = nullptr;
         hs_database_t *db = nullptr;
-        hs_error_t hs_code = hs_compile_ext_multi(patterns.data(), mpe._flags.data(), mpe._ids.data(), exts.data(), patterns.size(), mode, &pi._info, &db, &error);
+        hs_error_t hs_code = hs_compile_ext_multi(patterns.data(), mpe._flags.data(), mpe._ids.data(), exts.data(), patterns.size(), mode | horizon, &pi._info, &db, &error);
         _db.reset(db);
         if (hs_code != HS_SUCCESS) {
             std::string e = "Call to hs_compile_ext_multi failed";
@@ -121,7 +121,7 @@ namespace HyperScan {
             throw DatabaseException(e, hs_error, hs_code);
         }
     }
-    Database::Database(const MultiLiteral &ml, Mode mode) : _db(nullptr) {
+    Database::Database(const MultiLiteral &ml, Mode mode, Horizon horizon) : _db(nullptr) {
         std::vector<const char *> literals;
         std::vector<std::size_t> sizes;
         for (const auto &pattern : ml._literals) {
@@ -131,7 +131,7 @@ namespace HyperScan {
         hs_compile_error_t *error = nullptr;
         hs_database_t *db = nullptr;
         hs_error_t hs_code = hs_compile_lit_multi(literals.data(), ml._flags.data(), ml._ids.data(), sizes.data(),
-                                                  ml._literals.size(), mode, nullptr, &db, &error);
+                                                  ml._literals.size(), mode | horizon, nullptr, &db, &error);
         _db.reset(db);
         if (hs_code != HS_SUCCESS) {
             std::string e = "Call to hs_compile_lit_multi failed";
@@ -144,7 +144,7 @@ namespace HyperScan {
             throw DatabaseException(e, hs_error, hs_code);
         }
     }
-    Database::Database(const MultiLiteral &ml, Mode mode, const PlatformInfo& pi ) : _db(nullptr) {
+    Database::Database(const MultiLiteral &ml, Mode mode, const PlatformInfo& pi, Horizon horizon ) : _db(nullptr) {
         std::vector<const char *> literals;
         std::vector<std::size_t> sizes;
         for (const auto &pattern : ml._literals) {
@@ -154,7 +154,7 @@ namespace HyperScan {
         hs_compile_error_t *error = nullptr;
         hs_database_t *db = nullptr;
         hs_error_t hs_code = hs_compile_lit_multi(literals.data(), ml._flags.data(), ml._ids.data(), sizes.data(),
-                                                  ml._literals.size(), mode, &pi._info , &db, &error);
+                                                  ml._literals.size(), mode | horizon, &pi._info , &db, &error);
         _db.reset(db);
         if (hs_code != HS_SUCCESS) {
             std::string e = "Call to hs_compile_lit_multi failed";
@@ -167,10 +167,10 @@ namespace HyperScan {
             throw DatabaseException(e, hs_error, hs_code);
         }
     }
-    Database::Database(const Pattern &sp, Mode mode) : _db(nullptr) {
+    Database::Database(const Pattern &sp, Mode mode, Horizon horizon) : _db(nullptr) {
         hs_compile_error_t *error = nullptr;
         hs_database_t *db = nullptr;
-        hs_error_t hs_code = hs_compile(sp._pattern.c_str(), sp._flags, mode, nullptr, &db, &error);
+        hs_error_t hs_code = hs_compile(sp._pattern.c_str(), sp._flags, mode | horizon, nullptr, &db, &error);
         _db.reset(db);
         if (hs_code != HS_SUCCESS) {
             std::string e = "Call to hs_compile failed";
@@ -183,10 +183,10 @@ namespace HyperScan {
             throw DatabaseException(e, hs_error, hs_code);
         }
     }
-    Database::Database(const Pattern &sp, Mode mode, const PlatformInfo& pi ) : _db(nullptr) {
+    Database::Database(const Pattern &sp, Mode mode, const PlatformInfo& pi, Horizon horizon ) : _db(nullptr) {
         hs_compile_error_t *error = nullptr;
         hs_database_t *db = nullptr;
-        hs_error_t hs_code = hs_compile(sp._pattern.c_str(), sp._flags, mode, &pi._info, &db, &error);
+        hs_error_t hs_code = hs_compile(sp._pattern.c_str(), sp._flags, mode | horizon , &pi._info, &db, &error);
         _db.reset(db);
         if (hs_code != HS_SUCCESS) {
             std::string e = "Call to hs_compile failed";
@@ -199,10 +199,10 @@ namespace HyperScan {
             throw DatabaseException(e, hs_error, hs_code);
         }
     }
-    Database::Database(const Literal &sl, Mode mode) : _db(nullptr) {
+    Database::Database(const Literal &sl, Mode mode, Horizon horizon) : _db(nullptr) {
        hs_compile_error_t *error = nullptr;
        hs_database_t *db = nullptr;
-        hs_error_t hs_code = hs_compile_lit(sl._literal.data(), sl._flags, sl._literal.size(), mode, nullptr, &db, &error);
+        hs_error_t hs_code = hs_compile_lit(sl._literal.data(), sl._flags, sl._literal.size(), mode | horizon, nullptr, &db, &error);
        _db.reset(db);
         if (hs_code != HS_SUCCESS) {
             std::string e = "Call to hs_compile_lit failed";
@@ -215,10 +215,10 @@ namespace HyperScan {
             throw DatabaseException(e, hs_error, hs_code);
         }
     }
-    Database::Database(const Literal &sl, Mode mode, const PlatformInfo& pi ) : _db(nullptr) {
+    Database::Database(const Literal &sl, Mode mode, const PlatformInfo& pi, Horizon horizon ) : _db(nullptr) {
         hs_compile_error_t *error = nullptr;
         hs_database_t *db = nullptr;
-        hs_error_t hs_code = hs_compile_lit(sl._literal.data(), sl._flags, sl._literal.size(), mode, &pi._info , &db, &error);
+        hs_error_t hs_code = hs_compile_lit(sl._literal.data(), sl._flags, sl._literal.size(), mode | horizon , &pi._info , &db, &error);
         _db.reset(db);
         if (hs_code != HS_SUCCESS) {
             std::string e = "Call to hs_compile_lit failed";

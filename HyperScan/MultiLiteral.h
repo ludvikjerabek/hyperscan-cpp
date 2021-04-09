@@ -24,12 +24,13 @@
 #ifndef _HYPERSCAN_MULTI_LITERAL_H
 #define _HYPERSCAN_MULTI_LITERAL_H
 
+#include "Database.h"
 #include <vector>
 #include <memory>
 
 namespace HyperScan {
     class BlockDatabase;
-    class VectoredDatabase;
+    class VectorDatabase;
     class StreamDatabase;
     class PlatformInfo;
     class MultiLiteral {
@@ -40,12 +41,12 @@ namespace HyperScan {
     public:
         void AddLiteral(const std::vector<char> &literal, unsigned flags, unsigned identifier);
         void Clear();
-        [[nodiscard]] BlockDatabase GetBlockDatabase();
-        [[nodiscard]] VectoredDatabase GetVectoredDatabase();
-        [[nodiscard]] StreamDatabase GetStreamDatabase();
-        [[nodiscard]] BlockDatabase GetBlockDatabase(const PlatformInfo& pi);
-        [[nodiscard]] VectoredDatabase GetVectoredDatabase(const PlatformInfo& pi);
-        [[nodiscard]] StreamDatabase GetStreamDatabase(const PlatformInfo& pi);
+        [[nodiscard]] BlockDatabase GetBlockDatabase(Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] VectorDatabase GetVectorDatabase(Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] StreamDatabase GetStreamDatabase(Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] BlockDatabase GetBlockDatabase(const PlatformInfo& pi, Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] VectorDatabase GetVectorDatabase(const PlatformInfo& pi, Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] StreamDatabase GetStreamDatabase(const PlatformInfo& pi, Database::Horizon horizon = Database::Horizon::NONE);
     private:
         std::vector<std::vector<char>> _literals;
         std::vector<unsigned int> _flags;

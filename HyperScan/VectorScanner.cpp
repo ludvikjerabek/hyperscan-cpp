@@ -1,6 +1,6 @@
 /*
- * @file Scanner.cpp
- * @brief Scanner class currently provides static functions but may become an object in the future. Provides the hs_scan and hs_scan_vector functionality.
+ * @file VectorScanner.cpp
+ * @brief VectorScanner class currently provides static functions but may become an object in the future. Provides the hs_scan_vector functionality.
  * @author Ludvik Jerabek
  * @version 1.0 04/08/2021
  *
@@ -21,22 +21,12 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "Scanner.h"
-#include "BlockDatabase.h"
-#include "VectoredDatabase.h"
+#include "VectorScanner.h"
+#include "VectorDatabase.h"
 #include "Scratch.h"
 
 namespace HyperScan{
-    hs_error_t Scanner::Scan(BlockDatabase &db, Scratch &scratch, IMatcher &match, const std::vector<char>& data) {
-        return hs_scan(db._db.get(), data.data(), data.size(), 0, scratch._scratch.get(), IScanner::match_event, &match);
-    }
-    hs_error_t Scanner::Scan(BlockDatabase &db, Scratch &scratch, IMatcher &match, const std::string& data) {
-        return hs_scan(db._db.get(), data.data(), data.size(), 0, scratch._scratch.get(), IScanner::match_event, &match);
-    }
-    hs_error_t Scanner::Scan(BlockDatabase &db, Scratch &scratch, IMatcher &match, const char* buffer , unsigned int length) {
-        return hs_scan(db._db.get(), buffer , length , 0, scratch._scratch.get(), IScanner::match_event, &match);
-    }
-    hs_error_t Scanner::Scan(VectoredDatabase &db, Scratch &scratch, IMatcher &match, const std::vector<std::vector<char>>& blocks) {
+    hs_error_t BlockScanner::Scan(VectorDatabase &db, Scratch &scratch, IMatcher &match, const std::vector<std::vector<char>>& blocks) {
         // TODO: Limits exist on unsigned int vs size_t should address this.
         unsigned int size = blocks.size();
         std::vector<const char*> b;
@@ -47,7 +37,7 @@ namespace HyperScan{
         }
         return hs_scan_vector(db._db.get(), b.data(), s.data(), size , 0, scratch._scratch.get(), IScanner::match_event, &match);
     }
-    hs_error_t Scanner::Scan(VectoredDatabase &db, Scratch &scratch, IMatcher &match, const std::vector<std::string>& blocks) {
+    hs_error_t BlockScanner::Scan(VectorDatabase &db, Scratch &scratch, IMatcher &match, const std::vector<std::string>& blocks) {
         // TODO: Limits exist on unsigned int vs size_t should address this.
         unsigned int size = blocks.size();
         std::vector<const char*> b;

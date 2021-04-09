@@ -1,6 +1,6 @@
 /*
- * @file Scratch.h
- * @brief Scratch class wrapper for hs_scratch_t for HyperScan
+ * @file VectorScanner.h
+ * @brief VectorScanner class currently provides static functions but may become an object in the future. Provides the hs_scan_vector functionality.
  * @author Ludvik Jerabek
  * @version 1.0 04/08/2021
  *
@@ -21,38 +21,21 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef _HYPERSCAN_SCRATCH_H
-#define _HYPERSCAN_SCRATCH_H
+#ifndef _HYPERSCAN_SCANNER_H
+#define _HYPERSCAN_SCANNER_H
 
 #include <hs/hs.h>
-#include <memory>
+#include <string>
+#include <vector>
+#include "IScanner.h"
 
 namespace HyperScan {
-    class Database;
-    class Scratch {
-        friend class BlockScanner;
-        friend class StreamScanner;
+    class VectorDatabase;
+    class Scratch;
+    class BlockScanner : public IScanner {
     public:
-        explicit Scratch(const Database& db);
-        Scratch(Scratch&& scratch) = default;
-        Scratch& operator=(Scratch&& scratch) = default;
-        Scratch (const Scratch& scratch) = delete;
-        Scratch& operator= (const Scratch& scratch) = delete;
-        ~Scratch() = default;
-    public:
-        void Alloc(const Database& db);
-        Scratch Clone();
-    private:
-        // Used by Scratch object to clone
-        explicit Scratch(hs_scratch_t* scratch);
-    private:
-        struct Deleter {
-            void operator() (hs_scratch_t* db) {
-                hs_free_scratch(db);
-            }
-        };
-        std::unique_ptr<hs_scratch_t,Deleter> _scratch;
+        static hs_error_t Scan(VectorDatabase &db, Scratch &scratch, IMatcher &match, const std::vector<std::vector<char>>& blocks);
+        static hs_error_t Scan(VectorDatabase &db, Scratch &scratch, IMatcher &match, const std::vector<std::string>& blocks);
     };
 }
-
-#endif //BLPARSER_HS_SCRATCH_H
+#endif //_HYPERSCAN_SCANNER_H

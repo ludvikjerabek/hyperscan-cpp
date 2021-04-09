@@ -39,7 +39,7 @@ int main() {
     std::cout << "HyperScan Version: " << HyperScan::GetVersion() << std::endl;
 
     // Create a pattern object
-    HyperScan::Pattern pattern("^192\\.152\\.201\\.85$", HyperScan::Pattern::CASELESS |HyperScan::Pattern::MULTILINE );
+    HyperScan::Pattern pattern("^192\\.152\\.201\\.85$", HyperScan::Pattern::CASELESS | HyperScan::Pattern::MULTILINE);
 
     // Create a stream database from the current pattern object
     HyperScan::StreamDatabase pattern_db = pattern.GetStreamDatabase();

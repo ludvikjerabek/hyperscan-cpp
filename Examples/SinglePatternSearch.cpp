@@ -43,6 +43,7 @@ int main() {
 
     // Create a block database from the current pattern object
     HyperScan::BlockDatabase pattern_db = pattern.GetBlockDatabase();
+    HyperScan::BlockDatabase b2 = std::move(pattern_db);
 
     // Additional data you can query from the DB no required but just for visibility
     std::cout << "DB Size: " << pattern_db.GetSize() << std::endl;
@@ -66,7 +67,7 @@ int main() {
     file.read(block.data(), size);
 
     // Scan the block of data
-    HyperScan::Scanner::Scan(pattern_db,scratch,matcher,block);
+    HyperScan::BlockScanner::Scan(pattern_db,scratch,matcher,block);
 
     matcher.Dump();
 

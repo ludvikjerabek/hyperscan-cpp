@@ -30,16 +30,16 @@
 namespace HyperScan {
     class StreamDatabase final : public Database {
         public:
-        explicit StreamDatabase(const MultiPattern& mp) : Database(mp,Database::STREAM) {};
-        explicit StreamDatabase(const MultiPattern& mp, const PlatformInfo& pi ) : Database(mp, Database::STREAM, pi) {};
-        explicit StreamDatabase(const MultiPatternExtended& mpe) : Database(mpe,Database::STREAM) {};
-        explicit StreamDatabase(const MultiPatternExtended& mpe, const PlatformInfo& pi ) : Database(mpe, Database::STREAM, pi) {};
-        explicit StreamDatabase(const MultiLiteral& ml) : Database(ml,Database::STREAM) {};
-        explicit StreamDatabase(const MultiLiteral& ml, const PlatformInfo& pi ) : Database(ml, Database::STREAM, pi) {};
-        explicit StreamDatabase(const Pattern& sp) : Database(sp,Database::STREAM) {};
-        explicit StreamDatabase(const Pattern& sp, const PlatformInfo& pi ) : Database(sp, Database::STREAM, pi) {};
-        explicit StreamDatabase(const Literal& sl) : Database(sl,Database::STREAM) {};
-        explicit StreamDatabase(const Literal& sl, const PlatformInfo& pi ) : Database(sl, Database::STREAM, pi) {};
+        explicit StreamDatabase(const MultiPattern& mp, Horizon horizon = Horizon::NONE ) : Database(mp,Database::STREAM, horizon) {};
+        explicit StreamDatabase(const MultiPattern& mp, const PlatformInfo& pi, Horizon horizon = Horizon::NONE  ) : Database(mp, Database::STREAM, pi, horizon) {};
+        explicit StreamDatabase(const MultiPatternExtended& mpe, Horizon horizon = Horizon::NONE ) : Database(mpe,Database::STREAM, horizon) {};
+        explicit StreamDatabase(const MultiPatternExtended& mpe, const PlatformInfo& pi, Horizon horizon = Horizon::NONE  ) : Database(mpe, Database::STREAM, pi, horizon) {};
+        explicit StreamDatabase(const MultiLiteral& ml, Horizon horizon = Horizon::NONE ) : Database(ml,Database::STREAM, horizon) {};
+        explicit StreamDatabase(const MultiLiteral& ml, const PlatformInfo& pi, Horizon horizon = Horizon::NONE  ) : Database(ml, Database::STREAM, pi, horizon) {};
+        explicit StreamDatabase(const Pattern& sp, Horizon horizon = Horizon::NONE ) : Database(sp,Database::STREAM , horizon) {};
+        explicit StreamDatabase(const Pattern& sp, const PlatformInfo& pi, Horizon horizon = Horizon::NONE ) : Database(sp, Database::STREAM, pi, horizon) {};
+        explicit StreamDatabase(const Literal& sl, Horizon horizon = Horizon::NONE ) : Database(sl,Database::STREAM, horizon) {};
+        explicit StreamDatabase(const Literal& sl, const PlatformInfo& pi, Horizon horizon = Horizon::NONE  ) : Database(sl, Database::STREAM, pi, horizon) {};
 
         StreamDatabase() = delete;
         StreamDatabase (const StreamDatabase& db) = delete;
