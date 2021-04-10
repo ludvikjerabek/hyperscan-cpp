@@ -43,7 +43,6 @@ namespace HyperScan {
         void SetMinOffset(unsigned long long min_offset);
         void SetMaxOffset(unsigned long long max_offset);
         void SetMinLength(unsigned long long min_length);
-
         void SetEditDistance(unsigned edit_distance);
         void SetHammingDistanced(unsigned hamming_distance);
         void ClearMinOffset();

@@ -38,10 +38,16 @@ namespace HyperScan {
         _ids.clear();
         _literals.clear();
     }
-    BlockDatabase MultiLiteral::GetBlockDatabase(Database::Horizon horizon){ return BlockDatabase(*this,horizon); }
-    VectorDatabase MultiLiteral::GetVectorDatabase(Database::Horizon horizon){ return VectorDatabase(*this,horizon); }
-    StreamDatabase MultiLiteral::GetStreamDatabase(Database::Horizon horizon){ return StreamDatabase(*this,horizon);}
-    BlockDatabase MultiLiteral::GetBlockDatabase(const PlatformInfo& pi,Database::Horizon horizon){ return BlockDatabase(*this , pi, horizon); }
-    VectorDatabase MultiLiteral::GetVectorDatabase(const PlatformInfo& pi,Database::Horizon horizon){ return VectorDatabase(*this , pi, horizon); }
-    StreamDatabase MultiLiteral::GetStreamDatabase(const PlatformInfo& pi,Database::Horizon horizon){ return StreamDatabase(*this, pi, horizon);}
+    BlockDatabase MultiLiteral::GetBlockDatabase(Database::Horizon horizon) { return BlockDatabase(*this, horizon); }
+    VectorDatabase MultiLiteral::GetVectorDatabase(Database::Horizon horizon) { return VectorDatabase(*this, horizon); }
+    StreamDatabase MultiLiteral::GetStreamDatabase(Database::Horizon horizon) { return StreamDatabase(*this, horizon); }
+    BlockDatabase MultiLiteral::GetBlockDatabase(const PlatformInfo &pi, Database::Horizon horizon) {
+        return BlockDatabase(*this, pi, horizon);
+    }
+    VectorDatabase MultiLiteral::GetVectorDatabase(const PlatformInfo &pi, Database::Horizon horizon) {
+        return VectorDatabase(*this, pi, horizon);
+    }
+    StreamDatabase MultiLiteral::GetStreamDatabase(const PlatformInfo &pi, Database::Horizon horizon) {
+        return StreamDatabase(*this, pi, horizon);
+    }
 }

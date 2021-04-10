@@ -30,22 +30,30 @@
 #include "ExpressionInfo.h"
 #include "PlatformInfo.h"
 
- namespace HyperScan {
-    Pattern::Pattern() : _flags(0) , _id(0) {}
-    Pattern::Pattern(std::string  pattern, unsigned int flags , unsigned int id) : _pattern(std::move(pattern)), _flags(flags) , _id(id) {}
-    Pattern::Pattern(std::string  pattern, unsigned int flags) : _pattern(std::move(pattern)), _flags(flags) , _id(0) {}
+namespace HyperScan {
+    Pattern::Pattern() : _flags(0), _id(0) {}
+    Pattern::Pattern(std::string pattern, unsigned int flags, unsigned int id) : _pattern(std::move(pattern)), _flags(flags), _id(id) {}
+    Pattern::Pattern(std::string pattern, unsigned int flags) : _pattern(std::move(pattern)), _flags(flags), _id(0) {}
     std::string Pattern::GetPattern() const { return _pattern; }
-    void Pattern::SetPattern(const std::string& pattern) { _pattern = pattern; }
+    void Pattern::SetPattern(const std::string &pattern) { _pattern = pattern; }
     unsigned int Pattern::GetFlags() const { return _flags; }
     void Pattern::SetFlags(unsigned int flags) { _flags = flags; }
     unsigned int Pattern::GetId() const { return _id; }
     void Pattern::SetId(unsigned int id) { _id = id; }
-    ExpressionInfo Pattern::GetExpressionInfo(){ return ExpressionInfo(*this); }
-    ExpressionInfo Pattern::GetExpressionInfo(const ExtendedExpressionContext& ext){ return ExpressionInfo(*this , ext); }
-    BlockDatabase Pattern::GetBlockDatabase( Database::Horizon horizon ){ return BlockDatabase(*this, horizon ); }
-    VectorDatabase Pattern::GetVectorDatabase( Database::Horizon horizon ){ return VectorDatabase(*this, horizon ); }
-    StreamDatabase Pattern::GetStreamDatabase( Database::Horizon horizon ){ return StreamDatabase(*this, horizon );}
-    BlockDatabase Pattern::GetBlockDatabase(const PlatformInfo& pi, Database::Horizon horizon){ return BlockDatabase(*this , pi, horizon ); }
-    VectorDatabase Pattern::GetVectorDatabase(const PlatformInfo& pi, Database::Horizon horizon){ return VectorDatabase(*this , pi, horizon ); }
-    StreamDatabase Pattern::GetStreamDatabase(const PlatformInfo& pi, Database::Horizon horizon){ return StreamDatabase(*this, pi, horizon );}
+    ExpressionInfo Pattern::GetExpressionInfo() { return ExpressionInfo(*this); }
+    ExpressionInfo Pattern::GetExpressionInfo(const ExtendedExpressionContext &ext) {
+        return ExpressionInfo(*this, ext);
+    }
+    BlockDatabase Pattern::GetBlockDatabase(Database::Horizon horizon) { return BlockDatabase(*this, horizon); }
+    VectorDatabase Pattern::GetVectorDatabase(Database::Horizon horizon) { return VectorDatabase(*this, horizon); }
+    StreamDatabase Pattern::GetStreamDatabase(Database::Horizon horizon) { return StreamDatabase(*this, horizon); }
+    BlockDatabase Pattern::GetBlockDatabase(const PlatformInfo &pi, Database::Horizon horizon) {
+        return BlockDatabase(*this, pi, horizon);
+    }
+    VectorDatabase Pattern::GetVectorDatabase(const PlatformInfo &pi, Database::Horizon horizon) {
+        return VectorDatabase(*this, pi, horizon);
+    }
+    StreamDatabase Pattern::GetStreamDatabase(const PlatformInfo &pi, Database::Horizon horizon) {
+        return StreamDatabase(*this, pi, horizon);
+    }
 }

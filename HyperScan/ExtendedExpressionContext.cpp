@@ -24,7 +24,7 @@
 #include "ExtendedExpressionContext.h"
 
 namespace HyperScan {
-    ExtendedExpressionContext::ExtendedExpressionContext() : _ext({0}){}
+    ExtendedExpressionContext::ExtendedExpressionContext() : _ext({0}) {}
     unsigned long long ExtendedExpressionContext::GetFlags() const { return _ext.flags; }
     unsigned long long ExtendedExpressionContext::GetMinOffset() const { return _ext.min_offset; }
     unsigned long long ExtendedExpressionContext::GetMaxOffset() const { return _ext.max_offset; }
@@ -51,23 +51,23 @@ namespace HyperScan {
         _ext.flags |= HS_EXT_FLAG_HAMMING_DISTANCE;
         _ext.hamming_distance = hamming_distance;
     }
-    void ExtendedExpressionContext::ClearMinOffset(){
+    void ExtendedExpressionContext::ClearMinOffset() {
         _ext.flags &= ~(HS_EXT_FLAG_MIN_OFFSET);
         _ext.min_offset = 0;
     }
-    void ExtendedExpressionContext::ClearMaxOffset(){
+    void ExtendedExpressionContext::ClearMaxOffset() {
         _ext.flags &= ~(HS_EXT_FLAG_MAX_OFFSET);
         _ext.max_offset = 0;
     }
-    void ExtendedExpressionContext::ClearMinLength(){
+    void ExtendedExpressionContext::ClearMinLength() {
         _ext.flags &= ~(HS_EXT_FLAG_MIN_LENGTH);
         _ext.min_length = 0;
     }
-    void ExtendedExpressionContext::ClearEditDistance(){
+    void ExtendedExpressionContext::ClearEditDistance() {
         _ext.flags &= ~(HS_EXT_FLAG_EDIT_DISTANCE);
         _ext.edit_distance = 0;
     }
-    void ExtendedExpressionContext::ClearHammingDistanced(){
+    void ExtendedExpressionContext::ClearHammingDistanced() {
         _ext.flags &= ~(HS_EXT_FLAG_HAMMING_DISTANCE);
         _ext.hamming_distance = 0;
     }

@@ -48,14 +48,14 @@ namespace HyperScan {
             QUIET = HS_FLAG_QUIET
         };
     public:
-        explicit ExpressionInfo(const std::string& pattern, unsigned int flags);
-        explicit ExpressionInfo(const std::string& pattern, unsigned int flags, const ExtendedExpressionContext& ext);
-        explicit ExpressionInfo(const Pattern& sp);
-        explicit ExpressionInfo(const Pattern& sp , const ExtendedExpressionContext& ext);
-        ExpressionInfo(ExpressionInfo&& ei) = default;
-        ExpressionInfo& operator=(ExpressionInfo&& ei) = default;
-        ExpressionInfo (const ExpressionInfo& ei) = delete;
-        ExpressionInfo& operator= (const ExpressionInfo& ei) = delete;
+        explicit ExpressionInfo(const std::string &pattern, unsigned int flags);
+        explicit ExpressionInfo(const std::string &pattern, unsigned int flags, const ExtendedExpressionContext &ext);
+        explicit ExpressionInfo(const Pattern &sp);
+        explicit ExpressionInfo(const Pattern &sp, const ExtendedExpressionContext &ext);
+        ExpressionInfo(ExpressionInfo &&ei) = default;
+        ExpressionInfo &operator=(ExpressionInfo &&ei) = default;
+        ExpressionInfo(const ExpressionInfo &ei) = delete;
+        ExpressionInfo &operator=(const ExpressionInfo &ei) = delete;
         ~ExpressionInfo() = default;
     public:
         [[nodiscard]] char GetMatchesAtEod() const;
@@ -65,11 +65,11 @@ namespace HyperScan {
         [[nodiscard]] char GetUnorderedMatches() const;
     private:
         struct Deleter {
-            void operator() (hs_expr_info_t* ei) {
+            void operator()(hs_expr_info_t *ei) {
                 free(ei);
             }
         };
-        std::unique_ptr<hs_expr_info_t,Deleter> _info;
+        std::unique_ptr<hs_expr_info_t, Deleter> _info;
     };
 }
 

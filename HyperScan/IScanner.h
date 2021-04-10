@@ -1,6 +1,6 @@
 /*
  * @file IScanner.h
- * @brief Interface inherited by BlockScanner objects which maps results to IMatcher callback
+ * @brief Interface inherited by Scanner objects which maps results to IMatcher callback
  * @author Ludvik Jerabek
  * @version 1.0 04/08/2021
  *

@@ -29,19 +29,25 @@
 #include "PlatformInfo.h"
 
 namespace HyperScan {
-    Literal::Literal() : _flags(0) , _id(0) {}
-    Literal::Literal(std::vector<char> literal, unsigned int flags) : _literal(std::move(literal)), _flags(flags) , _id(0) {}
-    Literal::Literal(std::vector<char> literal, unsigned int flags, unsigned int id) : _literal(std::move(literal)), _flags(flags) , _id(id) {}
+    Literal::Literal() : _flags(0), _id(0) {}
+    Literal::Literal(std::vector<char> literal, unsigned int flags) : _literal(std::move(literal)), _flags(flags), _id(0) {}
+    Literal::Literal(std::vector<char> literal, unsigned int flags, unsigned int id) : _literal(std::move(literal)), _flags(flags), _id(id) {}
     std::vector<char> Literal::GetLiteral() const { return _literal; }
-    void Literal::SetLiteral(const std::vector<char>& literal) { _literal = literal; }
+    void Literal::SetLiteral(const std::vector<char> &literal) { _literal = literal; }
     unsigned int Literal::GetFlags() const { return _flags; }
     void Literal::SetFlags(unsigned int flags) { _flags = flags; }
     unsigned int Literal::GetId() const { return _id; }
     void Literal::SetId(unsigned int id) { _id = id; }
-    BlockDatabase Literal::GetBlockDatabase( Database::Horizon horizon ){ return BlockDatabase(*this, horizon); }
-    VectorDatabase Literal::GetVectorDatabase( Database::Horizon horizon ){ return VectorDatabase(*this, horizon); }
-    StreamDatabase Literal::GetStreamDatabase( Database::Horizon horizon ){ return StreamDatabase(*this, horizon);}
-    BlockDatabase Literal::GetBlockDatabase(const PlatformInfo& pi, Database::Horizon horizon){ return BlockDatabase(*this , pi, horizon); }
-    VectorDatabase Literal::GetVectorDatabase(const PlatformInfo& pi, Database::Horizon horizon){ return VectorDatabase(*this , pi, horizon); }
-    StreamDatabase Literal::GetStreamDatabase(const PlatformInfo& pi, Database::Horizon horizon){ return StreamDatabase(*this, pi, horizon);}
+    BlockDatabase Literal::GetBlockDatabase(Database::Horizon horizon) { return BlockDatabase(*this, horizon); }
+    VectorDatabase Literal::GetVectorDatabase(Database::Horizon horizon) { return VectorDatabase(*this, horizon); }
+    StreamDatabase Literal::GetStreamDatabase(Database::Horizon horizon) { return StreamDatabase(*this, horizon); }
+    BlockDatabase Literal::GetBlockDatabase(const PlatformInfo &pi, Database::Horizon horizon) {
+        return BlockDatabase(*this, pi, horizon);
+    }
+    VectorDatabase Literal::GetVectorDatabase(const PlatformInfo &pi, Database::Horizon horizon) {
+        return VectorDatabase(*this, pi, horizon);
+    }
+    StreamDatabase Literal::GetStreamDatabase(const PlatformInfo &pi, Database::Horizon horizon) {
+        return StreamDatabase(*this, pi, horizon);
+    }
 }

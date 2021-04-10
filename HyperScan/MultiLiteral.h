@@ -44,9 +44,12 @@ namespace HyperScan {
         [[nodiscard]] BlockDatabase GetBlockDatabase(Database::Horizon horizon = Database::Horizon::NONE);
         [[nodiscard]] VectorDatabase GetVectorDatabase(Database::Horizon horizon = Database::Horizon::NONE);
         [[nodiscard]] StreamDatabase GetStreamDatabase(Database::Horizon horizon = Database::Horizon::NONE);
-        [[nodiscard]] BlockDatabase GetBlockDatabase(const PlatformInfo& pi, Database::Horizon horizon = Database::Horizon::NONE);
-        [[nodiscard]] VectorDatabase GetVectorDatabase(const PlatformInfo& pi, Database::Horizon horizon = Database::Horizon::NONE);
-        [[nodiscard]] StreamDatabase GetStreamDatabase(const PlatformInfo& pi, Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] BlockDatabase
+        GetBlockDatabase(const PlatformInfo &pi, Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] VectorDatabase
+        GetVectorDatabase(const PlatformInfo &pi, Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] StreamDatabase
+        GetStreamDatabase(const PlatformInfo &pi, Database::Horizon horizon = Database::Horizon::NONE);
     private:
         std::vector<std::vector<char>> _literals;
         std::vector<unsigned int> _flags;

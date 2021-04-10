@@ -27,10 +27,10 @@
 #include <exception>
 #include <string>
 
-namespace HyperScan{
+namespace HyperScan {
     class DatabaseException : public std::exception {
     public:
-        DatabaseException(std::string msg, int hs_error, int hs_code) : _msg(std::move(msg)), _hs_error(hs_error),_hs_code(hs_code) {}
+        DatabaseException(std::string msg, int hs_error, int hs_code) : _msg(std::move(msg)), _hs_error(hs_error), _hs_code(hs_code) {}
         ~DatabaseException() override = default;
         [[nodiscard]] int getCode() const { return _hs_code; }
         [[nodiscard]] int getError() const { return _hs_error; }
@@ -56,10 +56,10 @@ namespace HyperScan{
         int _hs_code;
     };
 
-    class StreamScannerException : public std::exception {
+    class StreamException : public std::exception {
     public:
-        StreamScannerException(std::string msg, int hs_code) : _msg(std::move(msg)), _hs_code(hs_code) {}
-        ~StreamScannerException() override = default;
+        StreamException(std::string msg, int hs_code) : _msg(std::move(msg)), _hs_code(hs_code) {}
+        ~StreamException() override = default;
         [[nodiscard]] int getCode() const { return _hs_code; }
         [[nodiscard]] const char *what() const noexcept override {
             return _msg.c_str();
@@ -77,6 +77,7 @@ namespace HyperScan{
         [[nodiscard]] const char *what() const noexcept override {
             return _msg.c_str();
         }
+
     private:
         std::string _msg;
         int _hs_code;
@@ -84,15 +85,13 @@ namespace HyperScan{
 
     class ExpressionInfoException : public std::exception {
     public:
-        ExpressionInfoException(std::string msg, int hs_error, int hs_code) : _msg(std::move(msg)), _hs_error(hs_error),
-                                                                              _hs_code(hs_code) {}
+        ExpressionInfoException(std::string msg, int hs_error, int hs_code) : _msg(std::move(msg)), _hs_error(hs_error), _hs_code(hs_code) {}
         ~ExpressionInfoException() override = default;
         [[nodiscard]] int getCode() const { return _hs_code; }
         [[nodiscard]] int getError() const { return _hs_error; }
         [[nodiscard]] const char *what() const noexcept override {
             return _msg.c_str();
         }
-
     private:
         std::string _msg;
         int _hs_error;

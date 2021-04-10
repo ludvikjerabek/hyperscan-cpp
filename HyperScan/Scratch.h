@@ -30,28 +30,28 @@
 namespace HyperScan {
     class Database;
     class Scratch {
-        friend class BlockScanner;
-        friend class StreamScanner;
+        friend class Scanner;
+        friend class Stream;
     public:
-        explicit Scratch(const Database& db);
-        Scratch(Scratch&& scratch) = default;
-        Scratch& operator=(Scratch&& scratch) = default;
-        Scratch (const Scratch& scratch) = delete;
-        Scratch& operator= (const Scratch& scratch) = delete;
+        explicit Scratch(const Database &db);
+        Scratch(Scratch &&scratch) = default;
+        Scratch &operator=(Scratch &&scratch) = default;
+        Scratch(const Scratch &scratch) = delete;
+        Scratch &operator=(const Scratch &scratch) = delete;
         ~Scratch() = default;
     public:
-        void Alloc(const Database& db);
+        void Alloc(const Database &db);
         Scratch Clone();
     private:
         // Used by Scratch object to clone
-        explicit Scratch(hs_scratch_t* scratch);
+        explicit Scratch(hs_scratch_t *scratch);
     private:
         struct Deleter {
-            void operator() (hs_scratch_t* db) {
+            void operator()(hs_scratch_t *db) {
                 hs_free_scratch(db);
             }
         };
-        std::unique_ptr<hs_scratch_t,Deleter> _scratch;
+        std::unique_ptr<hs_scratch_t, Deleter> _scratch;
     };
 }
 

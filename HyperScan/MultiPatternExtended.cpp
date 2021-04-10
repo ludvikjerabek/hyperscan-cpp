@@ -35,7 +35,7 @@ namespace HyperScan {
         _ids.push_back(identifier);
         _exts.push_back(nullptr);
     }
-    void MultiPatternExtended::AddPattern(const std::string &pattern, unsigned int flags, unsigned int identifier, const ExtendedExpressionContext& ext) {
+    void MultiPatternExtended::AddPattern(const std::string &pattern, unsigned int flags, unsigned int identifier, const ExtendedExpressionContext &ext) {
         _patterns.push_back(pattern);
         _flags.push_back(flags);
         _ids.push_back(identifier);
@@ -47,10 +47,22 @@ namespace HyperScan {
         _patterns.clear();
         _exts.clear();
     }
-    BlockDatabase MultiPatternExtended::GetBlockDatabase(Database::Horizon horizon){ return BlockDatabase(*this, horizon); }
-    VectorDatabase MultiPatternExtended::GetVectorDatabase(Database::Horizon horizon){ return VectorDatabase(*this, horizon); }
-    StreamDatabase MultiPatternExtended::GetStreamDatabase(Database::Horizon horizon){ return StreamDatabase(*this, horizon);}
-    BlockDatabase MultiPatternExtended::GetBlockDatabase(const PlatformInfo& pi,Database::Horizon horizon){ return BlockDatabase(*this , pi, horizon); }
-    VectorDatabase MultiPatternExtended::GetVectorDatabase(const PlatformInfo& pi,Database::Horizon horizon){ return VectorDatabase(*this , pi, horizon); }
-    StreamDatabase MultiPatternExtended::GetStreamDatabase(const PlatformInfo& pi,Database::Horizon horizon){ return StreamDatabase(*this, pi, horizon);}
+    BlockDatabase MultiPatternExtended::GetBlockDatabase(Database::Horizon horizon) {
+        return BlockDatabase(*this, horizon);
+    }
+    VectorDatabase MultiPatternExtended::GetVectorDatabase(Database::Horizon horizon) {
+        return VectorDatabase(*this, horizon);
+    }
+    StreamDatabase MultiPatternExtended::GetStreamDatabase(Database::Horizon horizon) {
+        return StreamDatabase(*this, horizon);
+    }
+    BlockDatabase MultiPatternExtended::GetBlockDatabase(const PlatformInfo &pi, Database::Horizon horizon) {
+        return BlockDatabase(*this, pi, horizon);
+    }
+    VectorDatabase MultiPatternExtended::GetVectorDatabase(const PlatformInfo &pi, Database::Horizon horizon) {
+        return VectorDatabase(*this, pi, horizon);
+    }
+    StreamDatabase MultiPatternExtended::GetStreamDatabase(const PlatformInfo &pi, Database::Horizon horizon) {
+        return StreamDatabase(*this, pi, horizon);
+    }
 }

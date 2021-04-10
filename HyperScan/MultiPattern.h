@@ -42,12 +42,15 @@ namespace HyperScan {
     public:
         void AddPattern(const std::string &pattern, unsigned flags, unsigned identifier);
         void Clear();
-        [[nodiscard]] BlockDatabase GetBlockDatabase( Database::Horizon horizon = Database::Horizon::NONE );
-        [[nodiscard]] VectorDatabase GetVectorDatabase( Database::Horizon horizon = Database::Horizon::NONE );
-        [[nodiscard]] StreamDatabase GetStreamDatabase( Database::Horizon horizon = Database::Horizon::NONE );
-        [[nodiscard]] BlockDatabase GetBlockDatabase(const PlatformInfo& pi, Database::Horizon horizon = Database::Horizon::NONE);
-        [[nodiscard]] VectorDatabase GetVectorDatabase(const PlatformInfo& pi, Database::Horizon horizon = Database::Horizon::NONE);
-        [[nodiscard]] StreamDatabase GetStreamDatabase(const PlatformInfo& pi, Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] BlockDatabase GetBlockDatabase(Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] VectorDatabase GetVectorDatabase(Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] StreamDatabase GetStreamDatabase(Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] BlockDatabase
+        GetBlockDatabase(const PlatformInfo &pi, Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] VectorDatabase
+        GetVectorDatabase(const PlatformInfo &pi, Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] StreamDatabase
+        GetStreamDatabase(const PlatformInfo &pi, Database::Horizon horizon = Database::Horizon::NONE);
     private:
         std::vector<std::string> _patterns;
         std::vector<unsigned int> _flags;

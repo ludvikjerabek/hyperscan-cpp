@@ -30,34 +30,23 @@ namespace HyperScan {
         if (err != HS_SUCCESS)
             throw PlatformInfoException("Failed to populate platform", err);
     }
-
-    PlatformInfo::PlatformInfo(unsigned long long int features, unsigned long long int reserved1,
-                               unsigned long long int reserved2, unsigned int tune) : _info({0}) {
+    PlatformInfo::PlatformInfo(unsigned long long int features, unsigned long long int reserved1, unsigned long long int reserved2, unsigned int tune) : _info({0}) {
         _info.cpu_features = features;
         _info.reserved1 = reserved1;
         _info.reserved2 = reserved2;
         _info.tune = tune;
     }
-
     void PlatformInfo::Reset() {
         hs_error_t err = hs_populate_platform(&_info);
         if (err != HS_SUCCESS)
             throw PlatformInfoException("Failed to populate platform", err);
     }
-
     unsigned long long int PlatformInfo::GetCpuFeatures() const { return _info.cpu_features; }
-
     unsigned long long int PlatformInfo::GetReserved1() const { return _info.reserved1; }
-
     unsigned long long int PlatformInfo::GetReserved2() const { return _info.reserved2; }
-
     unsigned int PlatformInfo::GetTune() const { return _info.tune; }
-
     void PlatformInfo::SetCpuFeatures(unsigned long long int features) { _info.cpu_features = features; }
-
     void PlatformInfo::SetReserved1(unsigned long long int reserved) { _info.reserved1 = reserved; }
-
     void PlatformInfo::SetReserved2(unsigned long long int reserved) { _info.reserved2 = reserved; }
-
     void PlatformInfo::SetTune(unsigned int tune) { _info.tune = tune; }
 }

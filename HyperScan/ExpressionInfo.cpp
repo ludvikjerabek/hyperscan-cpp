@@ -27,10 +27,9 @@
 #include "ExtendedExpressionContext.h"
 
 namespace HyperScan {
-
-    ExpressionInfo::ExpressionInfo(const std::string& pattern, unsigned int flags) : _info(nullptr) {
+    ExpressionInfo::ExpressionInfo(const std::string &pattern, unsigned int flags) : _info(nullptr) {
         hs_compile_error_t *error = nullptr;
-        hs_expr_info_t* info;
+        hs_expr_info_t *info;
         hs_error_t hs_code = hs_expression_info(pattern.c_str(), flags, &info, &error);
         _info.reset(info);
         if (hs_code != HS_SUCCESS) {
@@ -44,11 +43,10 @@ namespace HyperScan {
             throw ExpressionInfoException(e, hs_error, hs_code);
         }
     }
-
-    ExpressionInfo::ExpressionInfo(const std::string& pattern, unsigned int flags, const ExtendedExpressionContext& ext) : _info(nullptr) {
+    ExpressionInfo::ExpressionInfo(const std::string &pattern, unsigned int flags, const ExtendedExpressionContext &ext) : _info(nullptr) {
         hs_compile_error_t *error = nullptr;
-        hs_expr_info_t* info;
-        hs_error_t hs_code = hs_expression_ext_info(pattern.c_str(), flags, &ext._ext , &info, &error);
+        hs_expr_info_t *info;
+        hs_error_t hs_code = hs_expression_ext_info(pattern.c_str(), flags, &ext._ext, &info, &error);
         _info.reset(info);
         if (hs_code != HS_SUCCESS) {
             std::string e = "Call to hs_expression_info failed";
@@ -61,10 +59,9 @@ namespace HyperScan {
             throw ExpressionInfoException(e, hs_error, hs_code);
         }
     }
-
-    ExpressionInfo::ExpressionInfo(const Pattern& sp) : _info(nullptr) {
+    ExpressionInfo::ExpressionInfo(const Pattern &sp) : _info(nullptr) {
         hs_compile_error_t *error = nullptr;
-        hs_expr_info_t* info;
+        hs_expr_info_t *info;
         hs_error_t hs_code = hs_expression_info(sp._pattern.c_str(), sp._flags, &info, &error);
         _info.reset(info);
         if (hs_code != HS_SUCCESS) {
@@ -78,11 +75,10 @@ namespace HyperScan {
             throw ExpressionInfoException(e, hs_error, hs_code);
         }
     }
-
-    ExpressionInfo::ExpressionInfo(const Pattern& sp , const ExtendedExpressionContext& ext) : _info(nullptr) {
+    ExpressionInfo::ExpressionInfo(const Pattern &sp, const ExtendedExpressionContext &ext) : _info(nullptr) {
         hs_compile_error_t *error = nullptr;
-        hs_expr_info_t* info;
-        hs_error_t hs_code = hs_expression_ext_info(sp._pattern.c_str(), sp._flags, &ext._ext , &info, &error);
+        hs_expr_info_t *info;
+        hs_error_t hs_code = hs_expression_ext_info(sp._pattern.c_str(), sp._flags, &ext._ext, &info, &error);
         _info.reset(info);
         if (hs_code != HS_SUCCESS) {
             std::string e = "Call to hs_expression_info failed";
@@ -95,34 +91,29 @@ namespace HyperScan {
             throw ExpressionInfoException(e, hs_error, hs_code);
         }
     }
-
     char ExpressionInfo::GetMatchesAtEod() const {
-        if( !_info )
-            throw ExpressionInfoException("Invalid hs_expr_info_t* is null",0,0);
+        if (!_info)
+            throw ExpressionInfoException("Invalid hs_expr_info_t* is null", 0, 0);
         return _info->matches_at_eod;
     }
-
     char ExpressionInfo::GetMatchesOnlyAtEod() const {
-        if( !_info )
-            throw ExpressionInfoException("Invalid hs_expr_info_t* is null",0,0);
+        if (!_info)
+            throw ExpressionInfoException("Invalid hs_expr_info_t* is null", 0, 0);
         return _info->matches_only_at_eod;
     }
-
     unsigned int ExpressionInfo::GetMaxWidth() const {
-        if( !_info )
-            throw ExpressionInfoException("Invalid hs_expr_info_t* is null",0,0);
+        if (!_info)
+            throw ExpressionInfoException("Invalid hs_expr_info_t* is null", 0, 0);
         return _info->max_width;
     }
-
     unsigned int ExpressionInfo::GetMinWidth() const {
-        if( !_info )
-            throw ExpressionInfoException("Invalid hs_expr_info_t* is null",0,0);
+        if (!_info)
+            throw ExpressionInfoException("Invalid hs_expr_info_t* is null", 0, 0);
         return _info->min_width;
     }
-
     char ExpressionInfo::GetUnorderedMatches() const {
-        if( !_info )
-            throw ExpressionInfoException("Invalid hs_expr_info_t* is null",0,0);
+        if (!_info)
+            throw ExpressionInfoException("Invalid hs_expr_info_t* is null", 0, 0);
         return _info->unordered_matches;
     }
 }

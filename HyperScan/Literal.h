@@ -44,22 +44,25 @@ namespace HyperScan {
         };
     public:
         explicit Literal();
-        explicit Literal(std::vector<char>  literal, unsigned int flags);
-        explicit Literal(std::vector<char>  literal, unsigned int flags, unsigned int id);
+        explicit Literal(std::vector<char> literal, unsigned int flags);
+        explicit Literal(std::vector<char> literal, unsigned int flags, unsigned int id);
         ~Literal() = default;
     public:
         [[nodiscard]] std::vector<char> GetLiteral() const;
-        void SetLiteral(const std::vector<char>& literal);
+        void SetLiteral(const std::vector<char> &literal);
         [[nodiscard]] unsigned int GetFlags() const;
         void SetFlags(unsigned int flags);
         [[nodiscard]] unsigned int GetId() const;
         void SetId(unsigned int id);
-        [[nodiscard]] BlockDatabase GetBlockDatabase( Database::Horizon horizon = Database::Horizon::NONE );
-        [[nodiscard]] VectorDatabase GetVectorDatabase( Database::Horizon horizon = Database::Horizon::NONE);
-        [[nodiscard]] StreamDatabase GetStreamDatabase( Database::Horizon horizon = Database::Horizon::NONE);
-        [[nodiscard]] BlockDatabase GetBlockDatabase(const PlatformInfo& pi, Database::Horizon horizon = Database::Horizon::NONE);
-        [[nodiscard]] VectorDatabase GetVectorDatabase(const PlatformInfo& pi, Database::Horizon horizon = Database::Horizon::NONE);
-        [[nodiscard]] StreamDatabase GetStreamDatabase(const PlatformInfo& pi, Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] BlockDatabase GetBlockDatabase(Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] VectorDatabase GetVectorDatabase(Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] StreamDatabase GetStreamDatabase(Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] BlockDatabase
+        GetBlockDatabase(const PlatformInfo &pi, Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] VectorDatabase
+        GetVectorDatabase(const PlatformInfo &pi, Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] StreamDatabase
+        GetStreamDatabase(const PlatformInfo &pi, Database::Horizon horizon = Database::Horizon::NONE);
     private:
         std::vector<char> _literal;
         unsigned int _flags;

@@ -8,7 +8,9 @@ using namespace std;
 class MyMatcher : public HyperScan::IMatcher {
 public:
     MyMatcher() : matches(0) {}
-    ~MyMatcher()= default;
+
+    ~MyMatcher() = default;
+
     // OnMatch is called when a match occurs
     int OnMatch(unsigned int id, unsigned long long from, unsigned long long to, unsigned int flags) override {
         // Printing output will slow down matching but it's for demonstration purposes.
@@ -20,10 +22,12 @@ public:
         matches++;
         return 0;
     }
+
     // Show number or matches for the data set
-    void Dump(){
+    void Dump() {
         std::cout << "Matches found: " << matches << std::endl;
     }
+
 private:
     int matches;
 };
@@ -40,8 +44,8 @@ int main() {
 
     // Create a pattern object
     HyperScan::MultiPattern multi_pattern;
-    multi_pattern.AddPattern("^192\\.152\\.201\\.85$", HyperScan::Pattern::CASELESS |HyperScan::Pattern::MULTILINE , 1);
-    multi_pattern.AddPattern("^136\\.147\\.188\\.21$", HyperScan::Pattern::CASELESS |HyperScan::Pattern::MULTILINE , 2);
+    multi_pattern.AddPattern("^192\\.152\\.201\\.85$", HyperScan::Pattern::CASELESS | HyperScan::Pattern::MULTILINE, 1);
+    multi_pattern.AddPattern("^136\\.147\\.188\\.21$", HyperScan::Pattern::CASELESS | HyperScan::Pattern::MULTILINE, 2);
 
     // Create a block database from the current pattern object
     HyperScan::BlockDatabase pattern_db = multi_pattern.GetBlockDatabase();
@@ -58,7 +62,7 @@ int main() {
 
     // Read a block of data
     std::ifstream file("ips.txt", std::ios::binary | std::ios::ate);
-    if( !file.is_open() ) {
+    if (!file.is_open()) {
         std::cout << "Failed to open ips.txt" << std::endl;
         return 1;
     }
@@ -69,7 +73,7 @@ int main() {
     file.read(block.data(), size);
     // Scan the block of data
 
-    HyperScan::BlockScanner::Scan(pattern_db,scratch,matcher,block);
+    HyperScan::Scanner::Scan(pattern_db, scratch, matcher, block);
 
     matcher.Dump();
 

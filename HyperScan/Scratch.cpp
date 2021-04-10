@@ -26,22 +26,22 @@
 #include "Exceptions.h"
 
 namespace HyperScan {
-    Scratch::Scratch(hs_scratch_t* scratch) : _scratch(scratch) {}
+    Scratch::Scratch(hs_scratch_t *scratch) : _scratch(scratch) {}
     Scratch::Scratch(const Database &db) : _scratch(nullptr) {
-        hs_scratch_t* scratch = nullptr;
+        hs_scratch_t *scratch = nullptr;
         hs_error_t hs_code = hs_alloc_scratch(db._db.get(), &scratch);
         _scratch.reset(scratch);
         if (hs_code != HS_SUCCESS)
             throw ScratchException("Failed to hs_alloc_scratch failed", hs_code);
     }
     void Scratch::Alloc(const Database &db) {
-        hs_scratch_t* scratch = _scratch.get();
+        hs_scratch_t *scratch = _scratch.get();
         hs_error_t hs_code = hs_alloc_scratch(db._db.get(), &scratch);
         if (hs_code != HS_SUCCESS)
             throw ScratchException("Failed to hs_alloc_scratch failed", hs_code);
     }
     Scratch Scratch::Clone() {
-        hs_scratch_t* scratch = nullptr;
+        hs_scratch_t *scratch = nullptr;
         hs_error_t hs_code = hs_clone_scratch(_scratch.get(), &scratch);
         Scratch s(scratch);
         if (hs_code != HS_SUCCESS)

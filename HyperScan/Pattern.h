@@ -37,7 +37,7 @@ namespace HyperScan {
     class ExpressionInfo;
     class PlatformInfo;
     class ExtendedExpressionContext;
-class Pattern {
+    class Pattern {
         friend class Database;
         friend class ExpressionInfo;
     public:
@@ -56,24 +56,24 @@ class Pattern {
         };
     public:
         Pattern();
-        Pattern(std::string  pattern, unsigned int flags);
-        Pattern(std::string  pattern, unsigned int flags , unsigned int id);
+        Pattern(std::string pattern, unsigned int flags);
+        Pattern(std::string pattern, unsigned int flags, unsigned int id);
         ~Pattern() = default;
     public:
         [[nodiscard]] std::string GetPattern() const;
-        void SetPattern(const std::string& pattern);
+        void SetPattern(const std::string &pattern);
         [[nodiscard]] unsigned int GetFlags() const;
         void SetFlags(unsigned int flags);
         [[nodiscard]] unsigned int GetId() const;
         void SetId(unsigned int id);
         [[nodiscard]] ExpressionInfo GetExpressionInfo();
-        [[nodiscard]] ExpressionInfo GetExpressionInfo(const ExtendedExpressionContext& ext);
-        [[nodiscard]] BlockDatabase GetBlockDatabase( Database::Horizon horizon = Database::Horizon::NONE  );
-        [[nodiscard]] VectorDatabase GetVectorDatabase( Database::Horizon horizon = Database::Horizon::NONE );
-        [[nodiscard]] StreamDatabase GetStreamDatabase( Database::Horizon horizon = Database::Horizon::NONE);
-        [[nodiscard]] BlockDatabase GetBlockDatabase(const PlatformInfo& pi, Database::Horizon horizon = Database::Horizon::NONE);
-        [[nodiscard]] VectorDatabase GetVectorDatabase(const PlatformInfo& pi, Database::Horizon horizon = Database::Horizon::NONE);
-        [[nodiscard]] StreamDatabase GetStreamDatabase(const PlatformInfo& pi, Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] ExpressionInfo GetExpressionInfo(const ExtendedExpressionContext &ext);
+        [[nodiscard]] BlockDatabase GetBlockDatabase(Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] VectorDatabase GetVectorDatabase(Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] StreamDatabase GetStreamDatabase(Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] BlockDatabase GetBlockDatabase(const PlatformInfo &pi, Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] VectorDatabase GetVectorDatabase(const PlatformInfo &pi, Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] StreamDatabase GetStreamDatabase(const PlatformInfo &pi, Database::Horizon horizon = Database::Horizon::NONE);
     private:
         std::string _pattern;
         unsigned int _flags;

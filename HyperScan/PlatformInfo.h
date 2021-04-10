@@ -31,7 +31,7 @@ namespace HyperScan {
         friend class Database;
     public:
         PlatformInfo();
-        PlatformInfo(unsigned long long int features, unsigned long long int reserved1,unsigned long long int reserved2, unsigned int tune);
+        PlatformInfo(unsigned long long int features, unsigned long long int reserved1, unsigned long long int reserved2, unsigned int tune);
         ~PlatformInfo() = default;
     public:
         void Reset();

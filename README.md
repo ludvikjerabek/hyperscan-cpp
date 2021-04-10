@@ -1,15 +1,14 @@
 # HyperScan C++
+
 C++ Wrapper for Intel Hyperscan
 
 # About Hyperscan
 
-Hyperscan is a high-performance multiple regex matching library. It follows the
-regular expression syntax of the commonly-used libpcre library, but is a
-standalone library with its own C API.
+Hyperscan is a high-performance multiple regex matching library. It follows the regular expression syntax of the
+commonly-used libpcre library, but is a standalone library with its own C API.
 
-Hyperscan uses hybrid automata techniques to allow simultaneous matching of
-large numbers (up to tens of thousands) of regular expressions and for the
-matching of regular expressions across streams of data.
+Hyperscan uses hybrid automata techniques to allow simultaneous matching of large numbers (up to tens of thousands) of
+regular expressions and for the matching of regular expressions across streams of data.
 
 Hyperscan is typically used in a DPI library stack.
 
@@ -17,8 +16,8 @@ The official homepage for Hyperscan is at [www.hyperscan.io](https://www.hypersc
 
 # General Usage
 
-The example provided below shows a single pattern match using a block database. Other examples can be found in the `Examples` folder in the
-project repository. 
+The example provided below shows a single pattern match using a block database. Other examples can be found in
+the `Examples` folder in the project repository.
 
 ```c++
 #include <iostream>
@@ -99,12 +98,10 @@ int main() {
 
 # License
 
-Hyperscan C++ is licensed under the MIT License. See the LICENSE file in the
-project repository.
+Hyperscan C++ is licensed under the MIT License. See the LICENSE file in the project repository.
 
 # Versioning
 
-The `master` branch on Github will always contain the most recent release of
-Hyperscan C++. Each version released to `master` goes through QA and testing before
-it is released; if you're a user, rather than a developer, this is the version
-you should be using.
+The `master` branch on Github will always contain the most recent release of Hyperscan C++. Each version released
+to `master` goes through QA and testing before it is released; if you're a user, rather than a developer, this is the
+version you should be using.

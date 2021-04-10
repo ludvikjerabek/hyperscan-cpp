@@ -1,6 +1,6 @@
 /*
- * @file BlockScanner.h
- * @brief BlockScanner class currently provides static functions but may become an object in the future. Provides the hs_scan functionality.
+ * @file Scanner.h
+ * @brief Scanner class currently provides static functions but may become an object in the future. Provides the hs_scan, hs_scan_vector, hs_scan_stream functionality.
  * @author Ludvik Jerabek
  * @version 1.0 04/08/2021
  *
@@ -31,12 +31,19 @@
 
 namespace HyperScan {
     class BlockDatabase;
+    class VectorDatabase;
+    class Stream;
     class Scratch;
-    class BlockScanner : public IScanner {
+    class Scanner : public IScanner {
     public:
-        static hs_error_t Scan(BlockDatabase &db, Scratch &scratch, IMatcher &match, const std::vector<char>& data);
-        static hs_error_t Scan(BlockDatabase &db, Scratch &scratch, IMatcher &match, const std::string& data);
-        static hs_error_t Scan(BlockDatabase &db, Scratch &scratch, IMatcher &match, const char* buffer , unsigned int length);
+        static hs_error_t Scan(BlockDatabase &db, Scratch &scratch, IMatcher &matcher, const std::vector<char> &data);
+        static hs_error_t Scan(BlockDatabase &db, Scratch &scratch, IMatcher &matcher, const std::string &data);
+        static hs_error_t Scan(BlockDatabase &db, Scratch &scratch, IMatcher &matcher, const char *buffer, unsigned int length);
+        static hs_error_t Scan(VectorDatabase &db, Scratch &scratch, IMatcher &matcher, const std::vector<std::vector<char>> &blocks);
+        static hs_error_t Scan(VectorDatabase &db, Scratch &scratch, IMatcher &matcher, const std::vector<std::string> &blocks);
+        static hs_error_t Scan(Stream &stream, Scratch &scratch, IMatcher &matcher, const std::vector<char> &data);
+        static hs_error_t Scan(Stream &stream, Scratch &scratch, IMatcher &matcher, const std::string &data);
+        static hs_error_t Scan(Stream &stream, Scratch &scratch, IMatcher &matcher, const char *data, unsigned int length);
     };
 }
 #endif //_HYPERSCAN_SCANNER_H

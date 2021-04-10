@@ -40,7 +40,7 @@ namespace HyperScan {
         }
         hs_compile_error_t *error = nullptr;
         hs_database_t *db = nullptr;
-        hs_error_t hs_code = hs_compile_multi(patterns.data(), mp._flags.data(), mp._ids.data(), patterns.size(), mode | horizon, nullptr, &db, &error);
+        hs_error_t hs_code = hs_compile_multi(patterns.data(), mp._flags.data(), mp._ids.data(), patterns.size(),mode | horizon, nullptr, &db, &error);
         _db.reset(db);
         if (hs_code != HS_SUCCESS) {
             std::string e = "Call to hs_compile_multi failed";
@@ -53,14 +53,15 @@ namespace HyperScan {
             throw DatabaseException(e, hs_error, hs_code);
         }
     }
-    Database::Database(const MultiPattern &mp, Mode mode, const PlatformInfo& pi, Horizon horizon) : _db(nullptr) {
+
+    Database::Database(const MultiPattern &mp, Mode mode, const PlatformInfo &pi, Horizon horizon) : _db(nullptr) {
         std::vector<const char *> patterns;
         for (const auto &pattern : mp._patterns) {
             patterns.push_back(pattern.c_str());
         }
         hs_compile_error_t *error = nullptr;
         hs_database_t *db = nullptr;
-        hs_error_t hs_code = hs_compile_multi(patterns.data(), mp._flags.data(), mp._ids.data(), patterns.size(), mode | horizon, &pi._info, &db, &error);
+        hs_error_t hs_code = hs_compile_multi(patterns.data(), mp._flags.data(), mp._ids.data(), patterns.size(),mode | horizon, &pi._info, &db, &error);
         _db.reset(db);
         if (hs_code != HS_SUCCESS) {
             std::string e = "Call to hs_compile_multi failed";
@@ -73,12 +74,13 @@ namespace HyperScan {
             throw DatabaseException(e, hs_error, hs_code);
         }
     }
+
     Database::Database(const MultiPatternExtended &mpe, Mode mode, Horizon horizon) : _db(nullptr) {
         std::vector<const char *> patterns;
         for (const auto &pattern : mpe._patterns) {
             patterns.push_back(pattern.c_str());
         }
-        std::vector<const hs_expr_ext_t*> exts;
+        std::vector<const hs_expr_ext_t *> exts;
         for (const auto &ext : mpe._exts) {
             exts.push_back(ext.get());
         }
@@ -97,12 +99,14 @@ namespace HyperScan {
             throw DatabaseException(e, hs_error, hs_code);
         }
     }
-    Database::Database(const MultiPatternExtended &mpe, Mode mode, const PlatformInfo& pi, Horizon horizon) : _db(nullptr) {
+
+    Database::Database(const MultiPatternExtended &mpe, Mode mode, const PlatformInfo &pi, Horizon horizon) : _db(
+            nullptr) {
         std::vector<const char *> patterns;
         for (const auto &pattern : mpe._patterns) {
             patterns.push_back(pattern.c_str());
         }
-        std::vector<const hs_expr_ext_t*> exts;
+        std::vector<const hs_expr_ext_t *> exts;
         for (const auto &ext : mpe._exts) {
             exts.push_back(ext.get());
         }
@@ -121,6 +125,7 @@ namespace HyperScan {
             throw DatabaseException(e, hs_error, hs_code);
         }
     }
+
     Database::Database(const MultiLiteral &ml, Mode mode, Horizon horizon) : _db(nullptr) {
         std::vector<const char *> literals;
         std::vector<std::size_t> sizes;
@@ -130,8 +135,7 @@ namespace HyperScan {
         }
         hs_compile_error_t *error = nullptr;
         hs_database_t *db = nullptr;
-        hs_error_t hs_code = hs_compile_lit_multi(literals.data(), ml._flags.data(), ml._ids.data(), sizes.data(),
-                                                  ml._literals.size(), mode | horizon, nullptr, &db, &error);
+        hs_error_t hs_code = hs_compile_lit_multi(literals.data(), ml._flags.data(), ml._ids.data(), sizes.data(), ml._literals.size(), mode | horizon, nullptr, &db, &error);
         _db.reset(db);
         if (hs_code != HS_SUCCESS) {
             std::string e = "Call to hs_compile_lit_multi failed";
@@ -144,7 +148,8 @@ namespace HyperScan {
             throw DatabaseException(e, hs_error, hs_code);
         }
     }
-    Database::Database(const MultiLiteral &ml, Mode mode, const PlatformInfo& pi, Horizon horizon ) : _db(nullptr) {
+
+    Database::Database(const MultiLiteral &ml, Mode mode, const PlatformInfo &pi, Horizon horizon) : _db(nullptr) {
         std::vector<const char *> literals;
         std::vector<std::size_t> sizes;
         for (const auto &pattern : ml._literals) {
@@ -153,8 +158,7 @@ namespace HyperScan {
         }
         hs_compile_error_t *error = nullptr;
         hs_database_t *db = nullptr;
-        hs_error_t hs_code = hs_compile_lit_multi(literals.data(), ml._flags.data(), ml._ids.data(), sizes.data(),
-                                                  ml._literals.size(), mode | horizon, &pi._info , &db, &error);
+        hs_error_t hs_code = hs_compile_lit_multi(literals.data(), ml._flags.data(), ml._ids.data(), sizes.data(), ml._literals.size(), mode | horizon, &pi._info, &db, &error);
         _db.reset(db);
         if (hs_code != HS_SUCCESS) {
             std::string e = "Call to hs_compile_lit_multi failed";
@@ -167,6 +171,7 @@ namespace HyperScan {
             throw DatabaseException(e, hs_error, hs_code);
         }
     }
+
     Database::Database(const Pattern &sp, Mode mode, Horizon horizon) : _db(nullptr) {
         hs_compile_error_t *error = nullptr;
         hs_database_t *db = nullptr;
@@ -183,10 +188,11 @@ namespace HyperScan {
             throw DatabaseException(e, hs_error, hs_code);
         }
     }
-    Database::Database(const Pattern &sp, Mode mode, const PlatformInfo& pi, Horizon horizon ) : _db(nullptr) {
+
+    Database::Database(const Pattern &sp, Mode mode, const PlatformInfo &pi, Horizon horizon) : _db(nullptr) {
         hs_compile_error_t *error = nullptr;
         hs_database_t *db = nullptr;
-        hs_error_t hs_code = hs_compile(sp._pattern.c_str(), sp._flags, mode | horizon , &pi._info, &db, &error);
+        hs_error_t hs_code = hs_compile(sp._pattern.c_str(), sp._flags, mode | horizon, &pi._info, &db, &error);
         _db.reset(db);
         if (hs_code != HS_SUCCESS) {
             std::string e = "Call to hs_compile failed";
@@ -199,11 +205,12 @@ namespace HyperScan {
             throw DatabaseException(e, hs_error, hs_code);
         }
     }
+
     Database::Database(const Literal &sl, Mode mode, Horizon horizon) : _db(nullptr) {
-       hs_compile_error_t *error = nullptr;
-       hs_database_t *db = nullptr;
+        hs_compile_error_t *error = nullptr;
+        hs_database_t *db = nullptr;
         hs_error_t hs_code = hs_compile_lit(sl._literal.data(), sl._flags, sl._literal.size(), mode | horizon, nullptr, &db, &error);
-       _db.reset(db);
+        _db.reset(db);
         if (hs_code != HS_SUCCESS) {
             std::string e = "Call to hs_compile_lit failed";
             int hs_error = 0;
@@ -215,10 +222,11 @@ namespace HyperScan {
             throw DatabaseException(e, hs_error, hs_code);
         }
     }
-    Database::Database(const Literal &sl, Mode mode, const PlatformInfo& pi, Horizon horizon ) : _db(nullptr) {
+
+    Database::Database(const Literal &sl, Mode mode, const PlatformInfo &pi, Horizon horizon) : _db(nullptr) {
         hs_compile_error_t *error = nullptr;
         hs_database_t *db = nullptr;
-        hs_error_t hs_code = hs_compile_lit(sl._literal.data(), sl._flags, sl._literal.size(), mode | horizon , &pi._info , &db, &error);
+        hs_error_t hs_code = hs_compile_lit(sl._literal.data(), sl._flags, sl._literal.size(), mode | horizon, &pi._info, &db, &error);
         _db.reset(db);
         if (hs_code != HS_SUCCESS) {
             std::string e = "Call to hs_compile_lit failed";
@@ -238,7 +246,7 @@ namespace HyperScan {
 
     size_t Database::GetSize() const {
         size_t size = 0;
-        hs_error_t hs_code = hs_database_size(_db.get(),&size);
+        hs_error_t hs_code = hs_database_size(_db.get(), &size);
         if (hs_code != HS_SUCCESS) {
             std::string e = "Call to hs_database_size failed";
             int hs_error = 0;
@@ -248,7 +256,7 @@ namespace HyperScan {
     }
 
     std::string Database::GetInfo() const {
-        char* strinfo = nullptr;
+        char *strinfo = nullptr;
         hs_error_t hs_code = hs_database_info(_db.get(), &strinfo);
         if (hs_code != HS_SUCCESS) {
             std::string e = "Call to hs_database_info failed";
@@ -260,31 +268,31 @@ namespace HyperScan {
         return info;
     }
 
-   /* std::vector<char> Database::Serialize() const {
-        char* data = nullptr;
-        size_t size = 0;
-        hs_error_t hs_code = hs_serialize_database(_db.get(),&data,&size);
-        if (hs_code != HS_SUCCESS) {
-            std::string e = "Call to hs_serialize_database failed";
-            int hs_error = 0;
-            throw DatabaseException(e, hs_error, hs_code);
-        }
-        std::vector<char> vec(data, data + size);
-        free(data);
-        return std::move(vec);
-    }
+    /* std::vector<char> Database::Serialize() const {
+         char* data = nullptr;
+         size_t size = 0;
+         hs_error_t hs_code = hs_serialize_database(_db.get(),&data,&size);
+         if (hs_code != HS_SUCCESS) {
+             std::string e = "Call to hs_serialize_database failed";
+             int hs_error = 0;
+             throw DatabaseException(e, hs_error, hs_code);
+         }
+         std::vector<char> vec(data, data + size);
+         free(data);
+         return std::move(vec);
+     }
 
-    std::vector<char> Database::Deserialize(std::vector<char> data) const {
-        char* data = nullptr;
-        size_t size = 0;
-        hs_error_t hs_code = hs_deserialize_database(_db.get(),&data,&size);
-        if (hs_code != HS_SUCCESS) {
-            std::string e = "Call to hs_serialize_database failed";
-            int hs_error = 0;
-            throw DatabaseException(e, hs_error, hs_code);
-        }
-        std::vector<char> vec(data, data + size);
-        free(data);
-        return std::move(vec);
-    }*/
+     std::vector<char> Database::Deserialize(std::vector<char> data) const {
+         char* data = nullptr;
+         size_t size = 0;
+         hs_error_t hs_code = hs_deserialize_database(_db.get(),&data,&size);
+         if (hs_code != HS_SUCCESS) {
+             std::string e = "Call to hs_serialize_database failed";
+             int hs_error = 0;
+             throw DatabaseException(e, hs_error, hs_code);
+         }
+         std::vector<char> vec(data, data + size);
+         free(data);
+         return std::move(vec);
+     }*/
 }

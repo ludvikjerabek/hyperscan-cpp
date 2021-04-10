@@ -8,7 +8,9 @@ using namespace std;
 class MyMatcher : public HyperScan::IMatcher {
 public:
     MyMatcher() : matches(0) {}
-    ~MyMatcher()= default;
+
+    ~MyMatcher() = default;
+
     // OnMatch is called when a match occurs
     int OnMatch(unsigned int id, unsigned long long from, unsigned long long to, unsigned int flags) override {
         // Printing output will slow down matching but it's for demonstration purposes.
@@ -20,10 +22,12 @@ public:
         matches++;
         return 0;
     }
+
     // Show number or matches for the data set
-    void Dump(){
+    void Dump() {
         std::cout << "Matches found: " << matches << std::endl;
     }
+
 private:
     int matches;
 };
@@ -56,24 +60,26 @@ int main() {
 
     // Reading data in chunks (stream simulation)
     std::ifstream file("ips.txt", std::ifstream::binary);
-    if( !file.is_open() ) {
+    if (!file.is_open()) {
         std::cout << "Failed to open ips.txt" << std::endl;
         return 1;
     }
-    std::vector<char> buffer (1024,0); //reads only the first 1024 bytes
+    std::vector<char> buffer(1024, 0); //reads only the first 1024 bytes
 
     // Create a stream scanner object.
-    HyperScan::StreamScanner scanner(pattern_db,scratch,matcher);
+    HyperScan::Stream stream;
+
     // Open the HS stream (hs_open_stream)
-    scanner.Open();
+    stream.Open(pattern_db);
+
     // Process the data in chunks and pass it to the stream.
-    while(!file.eof()) {
+    while (!file.eof()) {
         file.read(buffer.data(), buffer.size());
-        std::streamsize s=file.gcount();
-        scanner.Scan(buffer.data(),s);
+        std::streamsize s = file.gcount();
+        HyperScan::Scanner::Scan(stream,scratch,matcher, buffer.data(), s);
     }
     // Close the HS stream (hs_close_stream)
-    scanner.Close();
+    stream.Close(scratch,matcher);
 
     matcher.Dump();
 

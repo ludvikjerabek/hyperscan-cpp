@@ -38,9 +38,8 @@ namespace HyperScan {
     class PlatformInfo;
     class Database {
         friend class Scratch;
-        friend class BlockScanner;
-        friend class VectorScanner;
-        friend class StreamScanner;
+        friend class Scanner;
+        friend class Stream;
     public:
         enum Mode : unsigned int {
             STREAM = HS_MODE_STREAM,
@@ -55,22 +54,22 @@ namespace HyperScan {
             SMALL = HS_MODE_SOM_HORIZON_SMALL
         };
     protected:
-        explicit Database(const MultiPattern& mp ,Mode mode, Horizon horizon);
-        explicit Database(const MultiPattern& mp ,Mode mode, const PlatformInfo& pi, Horizon horizon );
-        explicit Database(const MultiPatternExtended& mpe , Mode mode, Horizon horizon);
-        explicit Database(const MultiPatternExtended& mpe , Mode mode, const PlatformInfo& pi, Horizon horizon );
-        explicit Database(const MultiLiteral& ml ,Mode mode, Horizon horizon);
-        explicit Database(const MultiLiteral& ml ,Mode mode, const PlatformInfo& pi, Horizon horizon );
-        explicit Database(const Pattern& sp ,Mode mode, Horizon horizon);
-        explicit Database(const Pattern& sp ,Mode mode, const PlatformInfo& pi, Horizon horizon );
-        explicit Database(const Literal& sl ,Mode mode, Horizon horizon);
-        explicit Database(const Literal& sl ,Mode mode, const PlatformInfo& pi, Horizon horizon );
-        Database(Database&& db) = default;
-        Database& operator=(Database&& db) = default;
+        explicit Database(const MultiPattern &mp, Mode mode, Horizon horizon);
+        explicit Database(const MultiPattern &mp, Mode mode, const PlatformInfo &pi, Horizon horizon);
+        explicit Database(const MultiPatternExtended &mpe, Mode mode, Horizon horizon);
+        explicit Database(const MultiPatternExtended &mpe, Mode mode, const PlatformInfo &pi, Horizon horizon);
+        explicit Database(const MultiLiteral &ml, Mode mode, Horizon horizon);
+        explicit Database(const MultiLiteral &ml, Mode mode, const PlatformInfo &pi, Horizon horizon);
+        explicit Database(const Pattern &sp, Mode mode, Horizon horizon);
+        explicit Database(const Pattern &sp, Mode mode, const PlatformInfo &pi, Horizon horizon);
+        explicit Database(const Literal &sl, Mode mode, Horizon horizon);
+        explicit Database(const Literal &sl, Mode mode, const PlatformInfo &pi, Horizon horizon);
+        Database(Database &&db) = default;
+        Database &operator=(Database &&db) = default;
     public:
         Database() = delete;
-        Database (const Database& db) = delete;
-        Database& operator= (const Database& db) = delete;
+        Database(const Database &db) = delete;
+        Database &operator=(const Database &db) = delete;
         ~Database() = default;
     public:
         [[nodiscard]] Scratch GetScratch() const;
@@ -80,11 +79,11 @@ namespace HyperScan {
         //std::vector<char> Deserialize(std::vector<char>) const;
     private:
         struct Deleter {
-            void operator() (hs_database* db) {
+            void operator()(hs_database *db) {
                 hs_free_database(db);
             }
         };
-        std::unique_ptr<hs_database_t,Deleter> _db;
+        std::unique_ptr<hs_database_t, Deleter> _db;
     };
 }
 

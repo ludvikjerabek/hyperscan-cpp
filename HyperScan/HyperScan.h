@@ -36,17 +36,17 @@
 #include "StreamDatabase.h"
 #include "VectorDatabase.h"
 #include "Scratch.h"
-#include "BlockScanner.h"
-#include "StreamScanner.h"
+#include "Stream.h"
+#include "Scanner.h"
 #include "ExtendedExpressionContext.h"
 
-namespace HyperScan{
-    std::string GetVersion(){
+namespace HyperScan {
+    std::string GetVersion() {
         return std::string(hs_version());
     }
     bool ValidPlatform() {
         hs_error_t hs_code = hs_valid_platform();
-        return ( hs_code == HS_SUCCESS );
+        return (hs_code == HS_SUCCESS);
     }
 }
 #endif //_HYPERSCAN_H
