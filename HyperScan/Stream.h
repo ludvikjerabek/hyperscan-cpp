@@ -42,7 +42,7 @@ namespace HyperScan {
         Stream(const Stream &scratch) = delete;
         Stream &operator=(const Stream &scratch) = delete;
         ~Stream() = default;
-        void Open(StreamDatabase &db);
+        void Open(const StreamDatabase &db);
         Stream Clone();
         void Reset();
         void Reset(const Scratch& scratch);

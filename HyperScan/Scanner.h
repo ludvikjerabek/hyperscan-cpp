@@ -36,14 +36,14 @@ namespace HyperScan {
     class Scratch;
     class Scanner : public IScanner {
     public:
-        static hs_error_t Scan(BlockDatabase &db, Scratch &scratch, IMatcher &matcher, const std::vector<char> &data);
-        static hs_error_t Scan(BlockDatabase &db, Scratch &scratch, IMatcher &matcher, const std::string &data);
-        static hs_error_t Scan(BlockDatabase &db, Scratch &scratch, IMatcher &matcher, const char *buffer, unsigned int length);
-        static hs_error_t Scan(VectorDatabase &db, Scratch &scratch, IMatcher &matcher, const std::vector<std::vector<char>> &blocks);
-        static hs_error_t Scan(VectorDatabase &db, Scratch &scratch, IMatcher &matcher, const std::vector<std::string> &blocks);
-        static hs_error_t Scan(Stream &stream, Scratch &scratch, IMatcher &matcher, const std::vector<char> &data);
-        static hs_error_t Scan(Stream &stream, Scratch &scratch, IMatcher &matcher, const std::string &data);
-        static hs_error_t Scan(Stream &stream, Scratch &scratch, IMatcher &matcher, const char *data, unsigned int length);
+        static hs_error_t Scan(const BlockDatabase &db, const Scratch &scratch, IMatcher &matcher, const std::vector<char> &data);
+        static hs_error_t Scan(const BlockDatabase &db, const Scratch &scratch, IMatcher &matcher, const std::string &data);
+        static hs_error_t Scan(const BlockDatabase &db, const Scratch &scratch, IMatcher &matcher, const char *buffer, unsigned int length);
+        static hs_error_t Scan(const VectorDatabase &db, const Scratch &scratch, IMatcher &matcher, const std::vector<std::vector<char>> &blocks);
+        static hs_error_t Scan(const VectorDatabase &db, const Scratch &scratch, IMatcher &matcher, const std::vector<std::string> &blocks);
+        static hs_error_t Scan(const Stream &stream, const Scratch &scratch, IMatcher &matcher, const std::vector<char> &data);
+        static hs_error_t Scan(const Stream &stream, const Scratch &scratch, IMatcher &matcher, const std::string &data);
+        static hs_error_t Scan(const Stream &stream, const Scratch &scratch, IMatcher &matcher, const char *data, unsigned int length);
     };
 }
 #endif //_HYPERSCAN_SCANNER_H

@@ -28,7 +28,7 @@
 #include "Scratch.h"
 
 namespace HyperScan {
-    hs_error_t Scanner::Scan(VectorDatabase &db, Scratch &scratch, IMatcher &matcher, const std::vector<std::vector<char>> &blocks) {
+    hs_error_t Scanner::Scan(const VectorDatabase &db, const Scratch &scratch, IMatcher &matcher, const std::vector<std::vector<char>> &blocks) {
         // TODO: Limits exist on unsigned int vs size_t should address this.
         unsigned int size = blocks.size();
         std::vector<const char *> b;
@@ -39,7 +39,7 @@ namespace HyperScan {
         }
         return hs_scan_vector(db._db.get(), b.data(), s.data(), size, 0, scratch._scratch.get(), IScanner::match_event, &matcher);
     }
-    hs_error_t Scanner::Scan(VectorDatabase &db, Scratch &scratch, IMatcher &matcher, const std::vector<std::string> &blocks) {
+    hs_error_t Scanner::Scan(const VectorDatabase &db, const Scratch &scratch, IMatcher &matcher, const std::vector<std::string> &blocks) {
         // TODO: Limits exist on unsigned int vs size_t should address this.
         unsigned int size = blocks.size();
         std::vector<const char *> b;
@@ -50,22 +50,22 @@ namespace HyperScan {
         }
         return hs_scan_vector(db._db.get(), b.data(), s.data(), size, 0, scratch._scratch.get(), IScanner::match_event, &matcher);
     }
-    hs_error_t Scanner::Scan(BlockDatabase &db, Scratch &scratch, IMatcher &matcher, const std::vector<char> &data) {
+    hs_error_t Scanner::Scan(const BlockDatabase &db, const Scratch &scratch, IMatcher &matcher, const std::vector<char> &data) {
         return hs_scan(db._db.get(), data.data(), data.size(), 0, scratch._scratch.get(), IScanner::match_event, &matcher);
     }
-    hs_error_t Scanner::Scan(BlockDatabase &db, Scratch &scratch, IMatcher &matcher, const std::string &data) {
+    hs_error_t Scanner::Scan(const BlockDatabase &db, const Scratch &scratch, IMatcher &matcher, const std::string &data) {
         return hs_scan(db._db.get(), data.data(), data.size(), 0, scratch._scratch.get(), IScanner::match_event, &matcher);
     }
-    hs_error_t Scanner::Scan(BlockDatabase &db, Scratch &scratch, IMatcher &matcher, const char *buffer, unsigned int length) {
+    hs_error_t Scanner::Scan(const BlockDatabase &db, const Scratch &scratch, IMatcher &matcher, const char *buffer, unsigned int length) {
         return hs_scan(db._db.get(), buffer, length, 0, scratch._scratch.get(), IScanner::match_event, &matcher);
     }
-    hs_error_t Scanner::Scan(Stream &stream, Scratch &scratch, IMatcher &matcher, const std::vector<char> &data) {
+    hs_error_t Scanner::Scan(const Stream &stream, const Scratch &scratch, IMatcher &matcher, const std::vector<char> &data) {
         return hs_scan_stream(stream._stream.get(), data.data(), data.size(), 0, scratch._scratch.get(), IScanner::match_event, &matcher);
     }
-    hs_error_t Scanner::Scan(Stream &stream, Scratch &scratch, IMatcher &matcher, const std::string &data) {
+    hs_error_t Scanner::Scan(const Stream &stream, const Scratch &scratch, IMatcher &matcher, const std::string &data) {
         return hs_scan_stream(stream._stream.get(), data.data(), data.size(), 0, scratch._scratch.get(), IScanner::match_event, &matcher);
     }
-    hs_error_t Scanner::Scan(Stream &stream, Scratch &scratch, IMatcher &matcher, const char *data, unsigned int length) {
+    hs_error_t Scanner::Scan(const Stream &stream, const Scratch &scratch, IMatcher &matcher, const char *data, unsigned int length) {
         return hs_scan_stream(stream._stream.get(), data, length, 0, scratch._scratch.get(), IScanner::match_event, &matcher);
     }
 }

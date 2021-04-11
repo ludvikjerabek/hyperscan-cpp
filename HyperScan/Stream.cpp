@@ -29,7 +29,7 @@
 namespace HyperScan {
     Stream::Stream(hs_stream_t *stream) : _stream(stream) {}
     Stream::Stream() : _stream(nullptr) {}
-    void Stream::Open(StreamDatabase &db) {
+    void Stream::Open(const StreamDatabase &db) {
         hs_stream_t *stream = nullptr;
         hs_error_t hs_code = hs_open_stream(db._db.get(), 0, &stream);
         _stream.reset(stream);
