@@ -21,8 +21,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef _HYPERSCAN_H
-#define _HYPERSCAN_H
+#ifndef HYPERSCAN_H
+#define HYPERSCAN_H
 
 #include "Exceptions.h"
 #include "PlatformInfo.h"
@@ -43,11 +43,11 @@
 
 namespace HyperScan {
     std::string GetVersion() {
-        return std::string(hs_version());
+        return hs_version();
     }
     bool ValidPlatform() {
         hs_error_t hs_code = hs_valid_platform();
         return (hs_code == HS_SUCCESS);
     }
 }
-#endif //_HYPERSCAN_H
+#endif //HYPERSCAN_H
