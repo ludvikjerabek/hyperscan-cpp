@@ -40,13 +40,17 @@ namespace HyperScan {
         _stream.reset();
     }
     void Stream::Close(const Scratch& scratch) {
-        hs_stream_t* stream = _stream.release();
-        hs_close_stream(stream, scratch._scratch.get(), nullptr, nullptr);
-    }
+	  hs_stream_t *stream = _stream.release();
+	  hs_error_t hs_code = hs_close_stream(stream, scratch._scratch.get(), nullptr, nullptr);
+	  if (hs_code!=HS_SUCCESS)
+		throw StreamException("Failed to hs_close_stream failed", hs_code);
+	}
     void Stream::Close(const Scratch& scratch, IMatcher &matcher) {
-        hs_stream_t* stream = _stream.release();
-        hs_close_stream(stream, scratch._scratch.get(), IScanner::match_event, &matcher);
-    }
+	  hs_stream_t *stream = _stream.release();
+	  hs_error_t hs_code = hs_close_stream(stream, scratch._scratch.get(), IScanner::match_event, &matcher);
+	  if (hs_code!=HS_SUCCESS)
+		throw StreamException("Failed to hs_close_stream failed", hs_code);
+	}
     Stream Stream::Clone() {
         if (!_stream)
             throw StreamException("Failed to clone, stream isn't opened", HS_INVALID);
@@ -58,14 +62,19 @@ namespace HyperScan {
         return s;
     }
     void Stream::Reset() {
-        hs_reset_stream(_stream.get(), 0, nullptr, nullptr, nullptr);
+	  hs_error_t hs_code = hs_reset_stream(_stream.get(), 0, nullptr, nullptr, nullptr);
+	  if (hs_code != HS_SUCCESS)
+		throw StreamException("Failed to hs_reset_stream failed", hs_code);
     }
     void Stream::Reset(const Scratch& scratch) {
-        hs_reset_stream(_stream.get(), 0,  scratch._scratch.get(), nullptr, nullptr);
+	  hs_error_t hs_code = hs_reset_stream(_stream.get(), 0,  scratch._scratch.get(), nullptr, nullptr);
+	  if (hs_code != HS_SUCCESS)
+		throw StreamException("Failed to hs_reset_stream failed", hs_code);
     }
     void Stream::Reset(const Scratch& scratch, IMatcher &matcher) {
-        hs_stream_t* stream = _stream.release();
-        hs_reset_stream(_stream.get(), 0,  scratch._scratch.get(), IScanner::match_event, &matcher);
+	  hs_error_t hs_code = hs_reset_stream(_stream.get(), 0,  scratch._scratch.get(), IScanner::match_event, &matcher);
+	  if (hs_code != HS_SUCCESS)
+		throw StreamException("Failed to hs_reset_stream failed", hs_code);
     }
 }
 
