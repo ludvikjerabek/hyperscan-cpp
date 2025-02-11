@@ -38,16 +38,16 @@ namespace HyperScan {
     void Literal::SetFlags(unsigned int flags) { _flags = flags; }
     unsigned int Literal::GetId() const { return _id; }
     void Literal::SetId(unsigned int id) { _id = id; }
-    BlockDatabase Literal::GetBlockDatabase(Database::Horizon horizon) { return BlockDatabase(*this, horizon); }
-    VectorDatabase Literal::GetVectorDatabase(Database::Horizon horizon) { return VectorDatabase(*this, horizon); }
-    StreamDatabase Literal::GetStreamDatabase(Database::Horizon horizon) { return StreamDatabase(*this, horizon); }
-    BlockDatabase Literal::GetBlockDatabase(const PlatformInfo &pi, Database::Horizon horizon) {
-        return BlockDatabase(*this, pi, horizon);
+    BlockDatabase Literal::GetBlockDatabase() { return BlockDatabase(*this); }
+    VectorDatabase Literal::GetVectorDatabase() { return VectorDatabase(*this); }
+    StreamDatabase Literal::GetStreamDatabase(StreamDatabase::Horizon horizon) { return StreamDatabase(*this, horizon); }
+    BlockDatabase Literal::GetBlockDatabase(const PlatformInfo &pi) {
+        return BlockDatabase(*this, pi);
     }
-    VectorDatabase Literal::GetVectorDatabase(const PlatformInfo &pi, Database::Horizon horizon) {
-        return VectorDatabase(*this, pi, horizon);
+    VectorDatabase Literal::GetVectorDatabase(const PlatformInfo &pi) {
+        return VectorDatabase(*this, pi);
     }
-    StreamDatabase Literal::GetStreamDatabase(const PlatformInfo &pi, Database::Horizon horizon) {
+    StreamDatabase Literal::GetStreamDatabase(const PlatformInfo &pi, StreamDatabase::Horizon horizon) {
         return StreamDatabase(*this, pi, horizon);
     }
 }

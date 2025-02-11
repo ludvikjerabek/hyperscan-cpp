@@ -29,62 +29,70 @@
 #include <vector>
 
 namespace HyperScan {
-    class MultiPattern;
-    class MultiPatternExtended;
-    class MultiLiteral;
-    class Pattern;
-    class Literal;
-    class Scratch;
-    class PlatformInfo;
-    class Database {
-        friend class Scratch;
-        friend class Scanner;
-        friend class Stream;
-    public:
-        enum Mode : unsigned int {
-            STREAM = HS_MODE_STREAM,
-            BLOCK = HS_MODE_BLOCK,
-            VECTORED = HS_MODE_VECTORED
-        };
-        // Separated horizon from the Mode since mode is passed as part of derived type.
-        enum Horizon : unsigned int {
-            NONE = 0,
-            LARGE = HS_MODE_SOM_HORIZON_LARGE,
-            MEDIUM = HS_MODE_SOM_HORIZON_MEDIUM,
-            SMALL = HS_MODE_SOM_HORIZON_SMALL
-        };
-    protected:
-        explicit Database(const MultiPattern &mp, Mode mode, Horizon horizon);
-        explicit Database(const MultiPattern &mp, Mode mode, const PlatformInfo &pi, Horizon horizon);
-        explicit Database(const MultiPatternExtended &mpe, Mode mode, Horizon horizon);
-        explicit Database(const MultiPatternExtended &mpe, Mode mode, const PlatformInfo &pi, Horizon horizon);
-        explicit Database(const MultiLiteral &ml, Mode mode, Horizon horizon);
-        explicit Database(const MultiLiteral &ml, Mode mode, const PlatformInfo &pi, Horizon horizon);
-        explicit Database(const Pattern &sp, Mode mode, Horizon horizon);
-        explicit Database(const Pattern &sp, Mode mode, const PlatformInfo &pi, Horizon horizon);
-        explicit Database(const Literal &sl, Mode mode, Horizon horizon);
-        explicit Database(const Literal &sl, Mode mode, const PlatformInfo &pi, Horizon horizon);
-        Database(Database &&db) = default;
-        Database &operator=(Database &&db) = default;
-    public:
-        Database() = delete;
-        Database(const Database &db) = delete;
-        Database &operator=(const Database &db) = delete;
-        ~Database() = default;
-    public:
-        [[nodiscard]] Scratch GetScratch() const;
-        [[nodiscard]] size_t GetSize() const;
-        [[nodiscard]] std::string GetInfo() const;
-        //std::vector<char> Serialize() const;
-        //std::vector<char> Deserialize(std::vector<char>) const;
-    private:
-        struct Deleter {
-            void operator()(hs_database *db) {
-                hs_free_database(db);
-            }
-        };
-        std::unique_ptr<hs_database_t, Deleter> _db;
-    };
+class MultiPattern;
+class MultiPatternExtended;
+class MultiLiteral;
+class Pattern;
+class Literal;
+class Scratch;
+class PlatformInfo;
+class Database {
+  friend class Scratch;
+  friend class Scanner;
+  friend class Stream;
+  friend std::vector<char> Serialize(const HyperScan::Database &db);
+ public:
+  enum Type : unsigned int {
+	STREAM = HS_MODE_STREAM,
+	BLOCK = HS_MODE_BLOCK,
+	VECTORED = HS_MODE_VECTORED
+  };
+  enum class Mode : unsigned int {
+	STREAM_NONE   = HS_MODE_STREAM,
+	STREAM_LARGE  = HS_MODE_STREAM | HS_MODE_SOM_HORIZON_LARGE,
+	STREAM_MEDIUM = HS_MODE_STREAM | HS_MODE_SOM_HORIZON_MEDIUM,
+	STREAM_SMALL  = HS_MODE_STREAM | HS_MODE_SOM_HORIZON_SMALL,
+	BLOCK    = HS_MODE_BLOCK,
+	VECTORED   = HS_MODE_VECTORED
+
+  };
+  static constexpr Type ExtractType(Mode mode) {
+	return static_cast<Type>(
+		static_cast<unsigned int>(mode) & (HS_MODE_STREAM | HS_MODE_BLOCK | HS_MODE_VECTORED)
+	);
+  }
+ protected:
+  explicit Database(const MultiPattern &mp, Mode mode);
+  explicit Database(const MultiPattern &mp, Mode mode, const PlatformInfo &pi);
+  explicit Database(const MultiPatternExtended &mpe, Mode mode);
+  explicit Database(const MultiPatternExtended &mpe, Mode mode, const PlatformInfo &pi);
+  explicit Database(const MultiLiteral &ml, Mode mode);
+  explicit Database(const MultiLiteral &ml, Mode mode, const PlatformInfo &pi);
+  explicit Database(const Pattern &sp, Mode mode);
+  explicit Database(const Pattern &sp, Mode mode, const PlatformInfo &pi);
+  explicit Database(const Literal &sl, Mode mode);
+  explicit Database(const Literal &sl, Mode mode, const PlatformInfo &pi);
+  Database(Database &&db) = default;
+  Database &operator=(Database &&db) = default;
+ public:
+  Database() = delete;
+  Database(const Database &db) = delete;
+  Database &operator=(const Database &db) = delete;
+  ~Database() = default;
+ public:
+  [[nodiscard]] Type GetType() const;
+  [[nodiscard]] Scratch GetScratch() const;
+  [[nodiscard]] size_t GetSize() const;
+  [[nodiscard]] std::string GetInfo() const;
+ private:
+  struct Deleter {
+	void operator()(hs_database *db) {
+	  hs_free_database(db);
+	}
+  };
+  std::unique_ptr<hs_database_t, Deleter> _db;
+  Type _type;
+};
 }
 
 #endif //_HYPERSCAN_DATABASE_H

@@ -29,16 +29,16 @@
 namespace HyperScan {
     class BlockDatabase final : public Database {
     public:
-        explicit BlockDatabase(const MultiPattern &mp, Horizon horizon = Horizon::NONE) : Database(mp, Database::BLOCK, horizon) {};
-        explicit BlockDatabase(const MultiPattern &mp, const PlatformInfo &pi, Horizon horizon = Horizon::NONE) : Database(mp, Database::BLOCK, pi, horizon) {};
-        explicit BlockDatabase(const MultiPatternExtended &mpe, Horizon horizon = Horizon::NONE) : Database(mpe,Database::BLOCK, horizon) {};
-        explicit BlockDatabase(const MultiPatternExtended &mpe, const PlatformInfo &pi, Horizon horizon = Horizon::NONE) : Database(mpe, Database::BLOCK, pi, horizon) {};
-        explicit BlockDatabase(const MultiLiteral &ml, Horizon horizon = Horizon::NONE) : Database(ml, Database::BLOCK, horizon) {};
-        explicit BlockDatabase(const MultiLiteral &ml, const PlatformInfo &pi, Horizon horizon = Horizon::NONE) : Database(ml, Database::BLOCK, pi, horizon) {};
-        explicit BlockDatabase(const Pattern &sp, Horizon horizon = Horizon::NONE) : Database(sp, Database::BLOCK, horizon) {};
-        explicit BlockDatabase(const Pattern &sp, const PlatformInfo &pi, Horizon horizon = Horizon::NONE) : Database( sp, Database::BLOCK, pi, horizon) {};
-        explicit BlockDatabase(const Literal &sl, Horizon horizon = Horizon::NONE) : Database(sl, Database::BLOCK, horizon) {};
-        explicit BlockDatabase(const Literal &sl, const PlatformInfo &pi, Horizon horizon = Horizon::NONE) : Database(sl, Database::BLOCK, pi, horizon) {};
+        explicit BlockDatabase(const MultiPattern &mp) : Database(mp, Database::Mode::BLOCK) {};
+        explicit BlockDatabase(const MultiPattern &mp, const PlatformInfo &pi) : Database(mp, Database::Mode::BLOCK, pi) {};
+        explicit BlockDatabase(const MultiPatternExtended &mpe) : Database(mpe,Database::Mode::BLOCK) {};
+        explicit BlockDatabase(const MultiPatternExtended &mpe, const PlatformInfo &pi) : Database(mpe, Database::Mode::BLOCK, pi) {};
+        explicit BlockDatabase(const MultiLiteral &ml) : Database(ml, Database::Mode::BLOCK) {};
+        explicit BlockDatabase(const MultiLiteral &ml, const PlatformInfo &pi) : Database(ml, Database::Mode::BLOCK, pi) {};
+        explicit BlockDatabase(const Pattern &sp) : Database(sp, Database::Mode::BLOCK) {};
+        explicit BlockDatabase(const Pattern &sp, const PlatformInfo &pi) : Database( sp, Database::Mode::BLOCK, pi) {};
+        explicit BlockDatabase(const Literal &sl) : Database(sl, Database::Mode::BLOCK) {};
+        explicit BlockDatabase(const Literal &sl, const PlatformInfo &pi) : Database(sl, Database::Mode::BLOCK, pi) {};
         BlockDatabase() = delete;
         BlockDatabase(const BlockDatabase &db) = delete;
         BlockDatabase &operator=(const BlockDatabase &db) = delete;

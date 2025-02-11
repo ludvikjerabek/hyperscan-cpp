@@ -28,75 +28,102 @@
 #include <string>
 
 namespace HyperScan {
-    class DatabaseException : public std::exception {
-    public:
-        DatabaseException(std::string msg, int hs_error, int hs_code) : _msg(std::move(msg)), _hs_error(hs_error), _hs_code(hs_code) {}
-        ~DatabaseException() override = default;
-        [[nodiscard]] int getCode() const { return _hs_code; }
-        [[nodiscard]] int getError() const { return _hs_error; }
-        [[nodiscard]] const char *what() const noexcept override {
-            return _msg.c_str();
-        }
-    private:
-        std::string _msg;
-        int _hs_error;
-        int _hs_code;
-    };
+class DatabaseException : public std::exception {
+public:
+	DatabaseException(std::string msg, int hs_error, int hs_code)
+			:_msg(std::move(msg)), _hs_error(hs_error), _hs_code(hs_code) { }
+	~DatabaseException() override = default;
+	[[nodiscard]] int getCode() const { return _hs_code; }
+	[[nodiscard]] int getError() const { return _hs_error; }
+	[[nodiscard]] const char* what() const noexcept override
+	{
+		return _msg.c_str();
+	}
+private:
+	std::string _msg;
+	int _hs_error;
+	int _hs_code;
+};
 
-    class ScratchException : public std::exception {
-    public:
-        ScratchException(std::string msg, int hs_code) : _msg(std::move(msg)), _hs_code(hs_code) {}
-        ~ScratchException() override = default;
-        [[nodiscard]] int getCode() const { return _hs_code; }
-        [[nodiscard]] const char *what() const noexcept override {
-            return _msg.c_str();
-        }
-    private:
-        std::string _msg;
-        int _hs_code;
-    };
+class DatabaseSerializerException : public std::exception {
+public:
+	DatabaseSerializerException(std::string msg, int hs_error, int hs_code)
+			:_msg(std::move(msg)), _hs_error(hs_error), _hs_code(hs_code) { }
+	~DatabaseSerializerException() override = default;
+	[[nodiscard]] int getCode() const { return _hs_code; }
+	[[nodiscard]] int getError() const { return _hs_error; }
+	[[nodiscard]] const char* what() const noexcept override
+	{
+		return _msg.c_str();
+	}
+private:
+	std::string _msg;
+	int _hs_error;
+	int _hs_code;
+};
 
-    class StreamException : public std::exception {
-    public:
-        StreamException(std::string msg, int hs_code) : _msg(std::move(msg)), _hs_code(hs_code) {}
-        ~StreamException() override = default;
-        [[nodiscard]] int getCode() const { return _hs_code; }
-        [[nodiscard]] const char *what() const noexcept override {
-            return _msg.c_str();
-        }
-    private:
-        std::string _msg;
-        int _hs_code;
-    };
+class ScratchException : public std::exception {
+public:
+	ScratchException(std::string msg, int hs_code)
+			:_msg(std::move(msg)), _hs_code(hs_code) { }
+	~ScratchException() override = default;
+	[[nodiscard]] int getCode() const { return _hs_code; }
+	[[nodiscard]] const char* what() const noexcept override
+	{
+		return _msg.c_str();
+	}
+private:
+	std::string _msg;
+	int _hs_code;
+};
 
-    class PlatformInfoException : public std::exception {
-    public:
-        PlatformInfoException(std::string msg, int hs_code) : _msg(std::move(msg)), _hs_code(hs_code) {}
-        ~PlatformInfoException() override = default;
-        [[nodiscard]] int getCode() const { return _hs_code; }
-        [[nodiscard]] const char *what() const noexcept override {
-            return _msg.c_str();
-        }
+class StreamException : public std::exception {
+public:
+	StreamException(std::string msg, int hs_code)
+			:_msg(std::move(msg)), _hs_code(hs_code) { }
+	~StreamException() override = default;
+	[[nodiscard]] int getCode() const { return _hs_code; }
+	[[nodiscard]] const char* what() const noexcept override
+	{
+		return _msg.c_str();
+	}
+private:
+	std::string _msg;
+	int _hs_code;
+};
 
-    private:
-        std::string _msg;
-        int _hs_code;
-    };
+class PlatformInfoException : public std::exception {
+public:
+	PlatformInfoException(std::string msg, int hs_code)
+			:_msg(std::move(msg)), _hs_code(hs_code) { }
+	~PlatformInfoException() override = default;
+	[[nodiscard]] int getCode() const { return _hs_code; }
+	[[nodiscard]] const char* what() const noexcept override
+	{
+		return _msg.c_str();
+	}
 
-    class ExpressionInfoException : public std::exception {
-    public:
-        ExpressionInfoException(std::string msg, int hs_error, int hs_code) : _msg(std::move(msg)), _hs_error(hs_error), _hs_code(hs_code) {}
-        ~ExpressionInfoException() override = default;
-        [[nodiscard]] int getCode() const { return _hs_code; }
-        [[nodiscard]] int getError() const { return _hs_error; }
-        [[nodiscard]] const char *what() const noexcept override {
-            return _msg.c_str();
-        }
-    private:
-        std::string _msg;
-        int _hs_error;
-        int _hs_code;
-    };
+private:
+	std::string _msg;
+	int _hs_code;
+};
+
+class ExpressionInfoException : public std::exception {
+public:
+	ExpressionInfoException(std::string msg, int hs_error, int hs_code)
+			:_msg(std::move(msg)), _hs_error(hs_error), _hs_code(hs_code) { }
+	~ExpressionInfoException() override = default;
+	[[nodiscard]] int getCode() const { return _hs_code; }
+	[[nodiscard]] int getError() const { return _hs_error; }
+	[[nodiscard]] const char* what() const noexcept override
+	{
+		return _msg.c_str();
+	}
+private:
+	std::string _msg;
+	int _hs_error;
+	int _hs_code;
+};
 }
 
 #endif //_HYPERSCAN_EXCEPTIONS_H

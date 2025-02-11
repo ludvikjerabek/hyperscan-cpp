@@ -47,22 +47,22 @@ namespace HyperScan {
         _patterns.clear();
         _exts.clear();
     }
-    BlockDatabase MultiPatternExtended::GetBlockDatabase(Database::Horizon horizon) {
-        return BlockDatabase(*this, horizon);
+    BlockDatabase MultiPatternExtended::GetBlockDatabase() {
+        return BlockDatabase(*this);
     }
-    VectorDatabase MultiPatternExtended::GetVectorDatabase(Database::Horizon horizon) {
-        return VectorDatabase(*this, horizon);
+    VectorDatabase MultiPatternExtended::GetVectorDatabase() {
+        return VectorDatabase(*this);
     }
-    StreamDatabase MultiPatternExtended::GetStreamDatabase(Database::Horizon horizon) {
+    StreamDatabase MultiPatternExtended::GetStreamDatabase(StreamDatabase::Horizon horizon) {
         return StreamDatabase(*this, horizon);
     }
-    BlockDatabase MultiPatternExtended::GetBlockDatabase(const PlatformInfo &pi, Database::Horizon horizon) {
-        return BlockDatabase(*this, pi, horizon);
+    BlockDatabase MultiPatternExtended::GetBlockDatabase(const PlatformInfo &pi) {
+        return BlockDatabase(*this, pi);
     }
-    VectorDatabase MultiPatternExtended::GetVectorDatabase(const PlatformInfo &pi, Database::Horizon horizon) {
-        return VectorDatabase(*this, pi, horizon);
+    VectorDatabase MultiPatternExtended::GetVectorDatabase(const PlatformInfo &pi) {
+        return VectorDatabase(*this, pi);
     }
-    StreamDatabase MultiPatternExtended::GetStreamDatabase(const PlatformInfo &pi, Database::Horizon horizon) {
+    StreamDatabase MultiPatternExtended::GetStreamDatabase(const PlatformInfo &pi, StreamDatabase::Horizon horizon) {
         return StreamDatabase(*this, pi, horizon);
     }
 }

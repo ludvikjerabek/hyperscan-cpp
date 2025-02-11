@@ -1,6 +1,6 @@
 /*
- * @file MultiPattern.cpp
- * @brief MultiPattern class is used to define sets of regex patterns and to crate the associated database for scanning.
+ * @file Database.h
+ * @brief Database base class. Wrapper for hs_database_t for HyperScan. This class should not be constructed directly.
  * @author Ludvik Jerabek
  * @version 1.0 04/08/2021
  *
@@ -21,32 +21,45 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "MultiPattern.h"
+#include <variant>
+#include "DatabaseSerializer.h"
+#include "Exceptions.h"
 #include "BlockDatabase.h"
-#include "VectorDatabase.h"
 #include "StreamDatabase.h"
+#include "VectorDatabase.h"
+#include "Database.h"
+
 
 namespace HyperScan {
-    void MultiPattern::AddPattern(const std::string &pattern, unsigned int flags, unsigned int identifier) {
-        _patterns.push_back(pattern);
-        _flags.push_back(flags);
-        _ids.push_back(identifier);
-    }
-    void MultiPattern::Clear() {
-        _flags.clear();
-        _ids.clear();
-        _patterns.clear();
-    }
-    BlockDatabase MultiPattern::GetBlockDatabase() { return BlockDatabase(*this); }
-    VectorDatabase MultiPattern::GetVectorDatabase() { return VectorDatabase(*this); }
-    StreamDatabase MultiPattern::GetStreamDatabase(StreamDatabase::Horizon horizon) { return StreamDatabase(*this, horizon); }
-    BlockDatabase MultiPattern::GetBlockDatabase(const PlatformInfo &pi) {
-        return BlockDatabase(*this, pi);
-    }
-    VectorDatabase MultiPattern::GetVectorDatabase(const PlatformInfo &pi) {
-        return VectorDatabase(*this, pi);
-    }
-    StreamDatabase MultiPattern::GetStreamDatabase(const PlatformInfo &pi, StreamDatabase::Horizon horizon) {
-        return StreamDatabase(*this, pi, horizon);
-    }
+std::vector<char> Serialize(const Database& db)
+{
+	char* data = nullptr;
+	size_t size = 0;
+	hs_error_t hs_code = hs_serialize_database(db._db.get(), &data, &size);
+
+	if (hs_code!=HS_SUCCESS) {
+		std::string e = "Call to hs_serialize_database failed to serialize database.";
+		int hs_error = 0;
+		throw DatabaseSerializerException(e, hs_error, hs_code);
+	}
+
+	std::vector<char> buffer(data, data+size);
+	free(data);
+
+	return buffer;
+}
+
+Database Deserialize(std::vector<char> data)
+{
+	char *info = nullptr;
+
+	hs_error_t hs_code = hs_serialized_database_info(data.data(),data.size(),&info);
+
+	if (hs_code!=HS_SUCCESS) {
+		std::string e = "Call to hs_serialized_database_info failed to query database info.";
+		int hs_error = 0;
+		throw DatabaseSerializerException(e, hs_error, hs_code);
+	}
+
+}
 }

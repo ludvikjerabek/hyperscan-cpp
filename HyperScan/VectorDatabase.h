@@ -31,16 +31,16 @@
 namespace HyperScan {
     class VectorDatabase final : public Database {
     public:
-        explicit VectorDatabase(const MultiPattern &mp, Horizon horizon = Horizon::NONE) : Database(mp, Database::VECTORED, horizon) {};
-        explicit VectorDatabase(const MultiPattern &mp, const PlatformInfo &pi, Horizon horizon = Horizon::NONE) : Database(mp, Database::VECTORED, pi, horizon) {};
-        explicit VectorDatabase(const MultiPatternExtended &mpe, Horizon horizon = Horizon::NONE) : Database(mpe, Database::VECTORED, horizon) {};
-        explicit VectorDatabase(const MultiPatternExtended &mpe, const PlatformInfo &pi, Horizon horizon = Horizon::NONE) : Database(mpe, Database::VECTORED, pi, horizon) {};
-        explicit VectorDatabase(const MultiLiteral &ml, Horizon horizon = Horizon::NONE) : Database(ml, Database::VECTORED, horizon) {};
-        explicit VectorDatabase(const MultiLiteral &ml, const PlatformInfo &pi, Horizon horizon = Horizon::NONE) : Database(ml, Database::VECTORED, pi, horizon) {};
-        explicit VectorDatabase(const Pattern &sp, Horizon horizon = Horizon::NONE) : Database(sp, Database::VECTORED, horizon) {};
-        explicit VectorDatabase(const Pattern &sp, const PlatformInfo &pi, Horizon horizon = Horizon::NONE) : Database(sp, Database::VECTORED, pi, horizon) {};
-        explicit VectorDatabase(const Literal &sl, Horizon horizon = Horizon::NONE) : Database(sl, Database::VECTORED, horizon) {};
-        explicit VectorDatabase(const Literal &sl, const PlatformInfo &pi, Horizon horizon = Horizon::NONE) : Database(sl, Database::VECTORED, pi, horizon) {};
+        explicit VectorDatabase(const MultiPattern &mp) : Database(mp, Database::Mode::VECTORED) {};
+        explicit VectorDatabase(const MultiPattern &mp, const PlatformInfo &pi) : Database(mp, Database::Mode::VECTORED, pi) {};
+        explicit VectorDatabase(const MultiPatternExtended &mpe) : Database(mpe, Database::Mode::VECTORED) {};
+        explicit VectorDatabase(const MultiPatternExtended &mpe, const PlatformInfo &pi) : Database(mpe, Database::Mode::VECTORED, pi) {};
+        explicit VectorDatabase(const MultiLiteral &ml) : Database(ml, Database::Mode::VECTORED) {};
+        explicit VectorDatabase(const MultiLiteral &ml, const PlatformInfo &pi) : Database(ml, Database::Mode::VECTORED, pi) {};
+        explicit VectorDatabase(const Pattern &sp) : Database(sp, Database::Mode::VECTORED) {};
+        explicit VectorDatabase(const Pattern &sp, const PlatformInfo &pi) : Database(sp, Database::Mode::VECTORED, pi) {};
+        explicit VectorDatabase(const Literal &sl) : Database(sl, Database::Mode::VECTORED) {};
+        explicit VectorDatabase(const Literal &sl, const PlatformInfo &pi) : Database(sl, Database::Mode::VECTORED, pi) {};
         VectorDatabase() = delete;
         VectorDatabase(const VectorDatabase &db) = delete;
         VectorDatabase &operator=(const VectorDatabase &db) = delete;

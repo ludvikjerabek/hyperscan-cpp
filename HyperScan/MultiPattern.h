@@ -25,6 +25,7 @@
 #define _HYPERSCAN_MULTI_PATTERN_H
 
 #include "Database.h"
+#include "StreamDatabase.h"
 #include <string>
 #include <vector>
 #include <memory>
@@ -42,15 +43,15 @@ namespace HyperScan {
     public:
         void AddPattern(const std::string &pattern, unsigned flags, unsigned identifier);
         void Clear();
-        [[nodiscard]] BlockDatabase GetBlockDatabase(Database::Horizon horizon = Database::Horizon::NONE);
-        [[nodiscard]] VectorDatabase GetVectorDatabase(Database::Horizon horizon = Database::Horizon::NONE);
-        [[nodiscard]] StreamDatabase GetStreamDatabase(Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] BlockDatabase GetBlockDatabase();
+        [[nodiscard]] VectorDatabase GetVectorDatabase();
+        [[nodiscard]] StreamDatabase GetStreamDatabase(StreamDatabase::Horizon horizon = StreamDatabase::Horizon::NONE);
         [[nodiscard]] BlockDatabase
-        GetBlockDatabase(const PlatformInfo &pi, Database::Horizon horizon = Database::Horizon::NONE);
+        GetBlockDatabase(const PlatformInfo &pi);
         [[nodiscard]] VectorDatabase
-        GetVectorDatabase(const PlatformInfo &pi, Database::Horizon horizon = Database::Horizon::NONE);
+        GetVectorDatabase(const PlatformInfo &pi);
         [[nodiscard]] StreamDatabase
-        GetStreamDatabase(const PlatformInfo &pi, Database::Horizon horizon = Database::Horizon::NONE);
+        GetStreamDatabase(const PlatformInfo &pi, StreamDatabase::Horizon horizon = StreamDatabase::Horizon::NONE);
     private:
         std::vector<std::string> _patterns;
         std::vector<unsigned int> _flags;

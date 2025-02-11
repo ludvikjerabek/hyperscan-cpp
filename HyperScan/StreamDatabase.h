@@ -31,17 +31,27 @@
 namespace HyperScan {
     class Stream;
     class StreamDatabase final : public Database {
+	public:
+	  enum Horizon : unsigned int {
+		NONE = 0,
+		LARGE = HS_MODE_SOM_HORIZON_LARGE,
+		MEDIUM = HS_MODE_SOM_HORIZON_MEDIUM,
+		SMALL = HS_MODE_SOM_HORIZON_SMALL
+	  };
+	  static constexpr Mode GetStreamMode(Horizon horizon) {
+		return static_cast<Mode>(HS_MODE_STREAM | static_cast<unsigned int>(horizon));
+	  }
     public:
-        explicit StreamDatabase(const MultiPattern &mp, Horizon horizon = Horizon::NONE) : Database(mp,Database::STREAM, horizon) {};
-        explicit StreamDatabase(const MultiPattern &mp, const PlatformInfo &pi, Horizon horizon = Horizon::NONE) : Database(mp, Database::STREAM, pi, horizon) {};
-        explicit StreamDatabase(const MultiPatternExtended &mpe, Horizon horizon = Horizon::NONE) : Database(mpe, Database::STREAM, horizon) {};
-        explicit StreamDatabase(const MultiPatternExtended &mpe, const PlatformInfo &pi, Horizon horizon = Horizon::NONE) : Database(mpe, Database::STREAM, pi, horizon) {};
-        explicit StreamDatabase(const MultiLiteral &ml, Horizon horizon = Horizon::NONE) : Database(ml, Database::STREAM, horizon) {};
-        explicit StreamDatabase(const MultiLiteral &ml, const PlatformInfo &pi, Horizon horizon = Horizon::NONE) : Database(ml, Database::STREAM, pi, horizon) {};
-        explicit StreamDatabase(const Pattern &sp, Horizon horizon = Horizon::NONE) : Database(sp, Database::STREAM, horizon) {};
-        explicit StreamDatabase(const Pattern &sp, const PlatformInfo &pi, Horizon horizon = Horizon::NONE) : Database(sp, Database::STREAM, pi, horizon) {};
-        explicit StreamDatabase(const Literal &sl, Horizon horizon = Horizon::NONE) : Database(sl, Database::STREAM, horizon) {};
-        explicit StreamDatabase(const Literal &sl, const PlatformInfo &pi, Horizon horizon = Horizon::NONE) : Database(sl, Database::STREAM, pi, horizon) {};
+        explicit StreamDatabase(const MultiPattern &mp, Horizon horizon = Horizon::NONE) : Database(mp, GetStreamMode(horizon)) {};
+        explicit StreamDatabase(const MultiPattern &mp, const PlatformInfo &pi, Horizon horizon = Horizon::NONE) : Database(mp, GetStreamMode(horizon), pi) {};
+        explicit StreamDatabase(const MultiPatternExtended &mpe, Horizon horizon = Horizon::NONE) : Database(mpe, GetStreamMode(horizon)) {};
+        explicit StreamDatabase(const MultiPatternExtended &mpe, const PlatformInfo &pi, Horizon horizon = Horizon::NONE) : Database(mpe, GetStreamMode(horizon), pi) {};
+        explicit StreamDatabase(const MultiLiteral &ml, Horizon horizon = Horizon::NONE) : Database(ml,GetStreamMode(horizon)) {};
+        explicit StreamDatabase(const MultiLiteral &ml, const PlatformInfo &pi, Horizon horizon = Horizon::NONE) : Database(ml, GetStreamMode(horizon), pi) {};
+        explicit StreamDatabase(const Pattern &sp, Horizon horizon = Horizon::NONE) : Database(sp, GetStreamMode(horizon)) {};
+        explicit StreamDatabase(const Pattern &sp, const PlatformInfo &pi, Horizon horizon = Horizon::NONE) : Database(sp, GetStreamMode(horizon), pi) {};
+        explicit StreamDatabase(const Literal &sl, Horizon horizon = Horizon::NONE) : Database(sl, GetStreamMode(horizon)) {};
+        explicit StreamDatabase(const Literal &sl, const PlatformInfo &pi, Horizon horizon = Horizon::NONE) : Database(sl, GetStreamMode(horizon), pi) {};
         StreamDatabase() = delete;
         StreamDatabase(const StreamDatabase &db) = delete;
         StreamDatabase &operator=(const StreamDatabase &db) = delete;

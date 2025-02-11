@@ -26,6 +26,7 @@
 
 #include <hs/hs.h>
 #include "Database.h"
+#include "StreamDatabase.h"
 #include <vector>
 #include <string>
 #include <memory>
@@ -46,12 +47,12 @@ namespace HyperScan {
         void AddPattern(const std::string &pattern, unsigned flags, unsigned identifier);
         void AddPattern(const std::string &pattern, unsigned flags, unsigned identifier, const ExtendedExpressionContext &ext);
         void Clear();
-        [[nodiscard]] BlockDatabase GetBlockDatabase(Database::Horizon horizon = Database::Horizon::NONE);
-        [[nodiscard]] VectorDatabase GetVectorDatabase(Database::Horizon horizon = Database::Horizon::NONE);
-        [[nodiscard]] StreamDatabase GetStreamDatabase(Database::Horizon horizon = Database::Horizon::NONE);
-        [[nodiscard]] BlockDatabase GetBlockDatabase(const PlatformInfo &pi, Database::Horizon horizon = Database::Horizon::NONE);
-        [[nodiscard]] VectorDatabase GetVectorDatabase(const PlatformInfo &pi, Database::Horizon horizon = Database::Horizon::NONE);
-        [[nodiscard]] StreamDatabase GetStreamDatabase(const PlatformInfo &pi, Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] BlockDatabase GetBlockDatabase();
+        [[nodiscard]] VectorDatabase GetVectorDatabase();
+        [[nodiscard]] StreamDatabase GetStreamDatabase(StreamDatabase::Horizon horizon = StreamDatabase::Horizon::NONE);
+        [[nodiscard]] BlockDatabase GetBlockDatabase(const PlatformInfo &pi);
+        [[nodiscard]] VectorDatabase GetVectorDatabase(const PlatformInfo &pi);
+        [[nodiscard]] StreamDatabase GetStreamDatabase(const PlatformInfo &pi, StreamDatabase::Horizon horizon = StreamDatabase::Horizon::NONE);
     private:
         std::vector<std::string> _patterns;
         std::vector<unsigned int> _flags;

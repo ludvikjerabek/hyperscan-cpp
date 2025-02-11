@@ -1,6 +1,6 @@
 /*
- * @file VectorScanner.cpp
- * @brief VectorScanner class currently provides static functions but may become an object in the future. Provides the hs_scan_vector functionality.
+ * @file Scanner.cpp
+ * @brief Scanner currently provides static functions but may become an object in the future. Provides the hs_scan_vector functionality.
  * @author Ludvik Jerabek
  * @version 1.0 04/08/2021
  *

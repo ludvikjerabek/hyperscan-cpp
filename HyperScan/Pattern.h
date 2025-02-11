@@ -27,6 +27,7 @@
 
 #include <hs/hs.h>
 #include "Database.h"
+#include "MultiLiteral.h"
 #include <string>
 #include <memory>
 
@@ -68,12 +69,12 @@ namespace HyperScan {
         void SetId(unsigned int id);
         [[nodiscard]] ExpressionInfo GetExpressionInfo();
         [[nodiscard]] ExpressionInfo GetExpressionInfo(const ExtendedExpressionContext &ext);
-        [[nodiscard]] BlockDatabase GetBlockDatabase(Database::Horizon horizon = Database::Horizon::NONE);
-        [[nodiscard]] VectorDatabase GetVectorDatabase(Database::Horizon horizon = Database::Horizon::NONE);
-        [[nodiscard]] StreamDatabase GetStreamDatabase(Database::Horizon horizon = Database::Horizon::NONE);
-        [[nodiscard]] BlockDatabase GetBlockDatabase(const PlatformInfo &pi, Database::Horizon horizon = Database::Horizon::NONE);
-        [[nodiscard]] VectorDatabase GetVectorDatabase(const PlatformInfo &pi, Database::Horizon horizon = Database::Horizon::NONE);
-        [[nodiscard]] StreamDatabase GetStreamDatabase(const PlatformInfo &pi, Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] BlockDatabase GetBlockDatabase();
+        [[nodiscard]] VectorDatabase GetVectorDatabase();
+        [[nodiscard]] StreamDatabase GetStreamDatabase(StreamDatabase::Horizon horizon = StreamDatabase::Horizon::NONE);
+        [[nodiscard]] BlockDatabase GetBlockDatabase(const PlatformInfo &pi);
+        [[nodiscard]] VectorDatabase GetVectorDatabase(const PlatformInfo &pi);
+        [[nodiscard]] StreamDatabase GetStreamDatabase(const PlatformInfo &pi, StreamDatabase::Horizon horizon = StreamDatabase::Horizon::NONE);
     private:
         std::string _pattern;
         unsigned int _flags;

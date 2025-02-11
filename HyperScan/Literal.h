@@ -26,6 +26,7 @@
 
 #include <hs/hs.h>
 #include "Database.h"
+#include "StreamDatabase.h"
 #include <vector>
 #include <memory>
 
@@ -54,15 +55,15 @@ namespace HyperScan {
         void SetFlags(unsigned int flags);
         [[nodiscard]] unsigned int GetId() const;
         void SetId(unsigned int id);
-        [[nodiscard]] BlockDatabase GetBlockDatabase(Database::Horizon horizon = Database::Horizon::NONE);
-        [[nodiscard]] VectorDatabase GetVectorDatabase(Database::Horizon horizon = Database::Horizon::NONE);
-        [[nodiscard]] StreamDatabase GetStreamDatabase(Database::Horizon horizon = Database::Horizon::NONE);
+        [[nodiscard]] BlockDatabase GetBlockDatabase();
+        [[nodiscard]] VectorDatabase GetVectorDatabase();
+        [[nodiscard]] StreamDatabase GetStreamDatabase(StreamDatabase::Horizon horizon = StreamDatabase::Horizon::NONE);
         [[nodiscard]] BlockDatabase
-        GetBlockDatabase(const PlatformInfo &pi, Database::Horizon horizon = Database::Horizon::NONE);
+        GetBlockDatabase(const PlatformInfo &pi);
         [[nodiscard]] VectorDatabase
-        GetVectorDatabase(const PlatformInfo &pi, Database::Horizon horizon = Database::Horizon::NONE);
+        GetVectorDatabase(const PlatformInfo &pi);
         [[nodiscard]] StreamDatabase
-        GetStreamDatabase(const PlatformInfo &pi, Database::Horizon horizon = Database::Horizon::NONE);
+        GetStreamDatabase(const PlatformInfo &pi, StreamDatabase::Horizon horizon = StreamDatabase::Horizon::NONE);
     private:
         std::vector<char> _literal;
         unsigned int _flags;

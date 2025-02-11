@@ -44,16 +44,16 @@ namespace HyperScan {
     ExpressionInfo Pattern::GetExpressionInfo(const ExtendedExpressionContext &ext) {
         return ExpressionInfo(*this, ext);
     }
-    BlockDatabase Pattern::GetBlockDatabase(Database::Horizon horizon) { return BlockDatabase(*this, horizon); }
-    VectorDatabase Pattern::GetVectorDatabase(Database::Horizon horizon) { return VectorDatabase(*this, horizon); }
-    StreamDatabase Pattern::GetStreamDatabase(Database::Horizon horizon) { return StreamDatabase(*this, horizon); }
-    BlockDatabase Pattern::GetBlockDatabase(const PlatformInfo &pi, Database::Horizon horizon) {
-        return BlockDatabase(*this, pi, horizon);
+    BlockDatabase Pattern::GetBlockDatabase() { return BlockDatabase(*this); }
+    VectorDatabase Pattern::GetVectorDatabase() { return VectorDatabase(*this); }
+    StreamDatabase Pattern::GetStreamDatabase(StreamDatabase::Horizon horizon) { return StreamDatabase(*this, horizon); }
+    BlockDatabase Pattern::GetBlockDatabase(const PlatformInfo &pi) {
+        return BlockDatabase(*this, pi);
     }
-    VectorDatabase Pattern::GetVectorDatabase(const PlatformInfo &pi, Database::Horizon horizon) {
-        return VectorDatabase(*this, pi, horizon);
+    VectorDatabase Pattern::GetVectorDatabase(const PlatformInfo &pi) {
+        return VectorDatabase(*this, pi);
     }
-    StreamDatabase Pattern::GetStreamDatabase(const PlatformInfo &pi, Database::Horizon horizon) {
+    StreamDatabase Pattern::GetStreamDatabase(const PlatformInfo &pi, StreamDatabase::Horizon horizon) {
         return StreamDatabase(*this, pi, horizon);
     }
 }
