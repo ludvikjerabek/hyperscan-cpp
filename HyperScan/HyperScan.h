@@ -39,7 +39,6 @@
 #include "Stream.h"
 #include "Scanner.h"
 #include "ExtendedExpressionContext.h"
-#include "DatabaseSerializer.h"
 
 namespace HyperScan {
     std::string GetVersion() {

@@ -29,7 +29,7 @@
 namespace HyperScan {
     class IScanner {
     protected:
-        static int match_event(unsigned int id, unsigned long long from, unsigned long long to, unsigned int flags, void *context) {
+	  [[nodiscard]] static int match_event(unsigned int id, unsigned long long from, unsigned long long to, unsigned int flags, void *context) {
             auto ptr = static_cast<IMatcher *>(context);
             return ptr->OnMatch(id, from, to, flags);
         }

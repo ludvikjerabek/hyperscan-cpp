@@ -27,7 +27,7 @@ namespace HyperScan {
     class IMatcher {
         friend class IScanner;
     protected:
-        virtual int OnMatch(unsigned int id, unsigned long long from, unsigned long long to, unsigned int flags) = 0;
+	  [[nodiscard]] virtual int OnMatch(unsigned int id, unsigned long long from, unsigned long long to, unsigned int flags) = 0;
     };
 }
 #endif //HYPERSCAN_IMATCHER_H
