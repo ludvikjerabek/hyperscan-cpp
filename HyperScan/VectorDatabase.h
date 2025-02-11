@@ -22,8 +22,8 @@
  */
 
 
-#ifndef _HYPERSCAN_VECTOREDDATABASE_H
-#define _HYPERSCAN_VECTOREDDATABASE_H
+#ifndef HYPERSCAN_VECTOREDDATABASE_H
+#define HYPERSCAN_VECTOREDDATABASE_H
 
 #include "Database.h"
 #include <memory>
@@ -50,4 +50,4 @@ namespace HyperScan {
     };
 }
 
-#endif //_HYPERSCAN_VECTOREDDATABASE_H
+#endif //HYPERSCAN_VECTOREDDATABASE_H

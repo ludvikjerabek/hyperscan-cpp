@@ -22,8 +22,8 @@
  */
 
 
-#ifndef _HYPERSCAN_STREAMDATABASE_H
-#define _HYPERSCAN_STREAMDATABASE_H
+#ifndef HYPERSCAN_STREAMDATABASE_H
+#define HYPERSCAN_STREAMDATABASE_H
 
 #include "Database.h"
 #include "Stream.h"
@@ -61,4 +61,4 @@ namespace HyperScan {
     };
 }
 
-#endif //_HYPERSCAN_STREAMDATABASE_H
+#endif //HYPERSCAN_STREAMDATABASE_H

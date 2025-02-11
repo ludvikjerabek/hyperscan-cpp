@@ -21,8 +21,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef _HYPERSCAN_IMATCHER_H
-#define _HYPERSCAN_IMATCHER_H
+#ifndef HYPERSCAN_IMATCHER_H
+#define HYPERSCAN_IMATCHER_H
 namespace HyperScan {
     class IMatcher {
         friend class IScanner;
@@ -30,4 +30,4 @@ namespace HyperScan {
         virtual int OnMatch(unsigned int id, unsigned long long from, unsigned long long to, unsigned int flags) = 0;
     };
 }
-#endif //_HYPERSCAN_IMATCHER_H
+#endif //HYPERSCAN_IMATCHER_H

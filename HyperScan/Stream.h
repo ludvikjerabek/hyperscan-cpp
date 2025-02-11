@@ -21,8 +21,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef _HYPERSCAN_STREAM_H
-#define _HYPERSCAN_STREAM_H
+#ifndef HYPERSCAN_STREAM_H
+#define HYPERSCAN_STREAM_H
 
 #include "Exceptions.h"
 #include "IScanner.h"
@@ -65,4 +65,4 @@ namespace HyperScan {
     };
 }
 
-#endif //_HYPERSCAN_STREAM_H
+#endif //HYPERSCAN_STREAM_H

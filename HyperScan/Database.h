@@ -21,8 +21,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef _HYPERSCAN_DATABASE_H
-#define _HYPERSCAN_DATABASE_H
+#ifndef HYPERSCAN_DATABASE_H
+#define HYPERSCAN_DATABASE_H
 
 #include <hs/hs.h>
 #include <memory>
@@ -54,7 +54,6 @@ class Database {
 	STREAM_SMALL  = HS_MODE_STREAM | HS_MODE_SOM_HORIZON_SMALL,
 	BLOCK    = HS_MODE_BLOCK,
 	VECTORED   = HS_MODE_VECTORED
-
   };
   static constexpr Type ExtractType(Mode mode) {
 	return static_cast<Type>(
@@ -95,4 +94,4 @@ class Database {
 };
 }
 
-#endif //_HYPERSCAN_DATABASE_H
+#endif //HYPERSCAN_DATABASE_H

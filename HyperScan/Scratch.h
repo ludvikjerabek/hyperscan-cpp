@@ -21,8 +21,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef _HYPERSCAN_SCRATCH_H
-#define _HYPERSCAN_SCRATCH_H
+#ifndef HYPERSCAN_SCRATCH_H
+#define HYPERSCAN_SCRATCH_H
 
 #include <hs/hs.h>
 #include <memory>
@@ -55,4 +55,4 @@ namespace HyperScan {
     };
 }
 
-#endif //BLPARSER_HS_SCRATCH_H
+#endif //HYPERSCAN_SCRATCH_H

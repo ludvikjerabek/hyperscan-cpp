@@ -22,8 +22,8 @@
  */
 
 
-#ifndef _HYPERSCAN_PATTERN_H
-#define _HYPERSCAN_PATTERN_H
+#ifndef HYPERSCAN_PATTERN_H
+#define HYPERSCAN_PATTERN_H
 
 #include <hs/hs.h>
 #include "Database.h"
@@ -82,4 +82,4 @@ namespace HyperScan {
     };
 }
 
-#endif //_HYPERSCAN_PATTERN_H
+#endif //HYPERSCAN_PATTERN_H

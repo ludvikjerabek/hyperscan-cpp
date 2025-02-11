@@ -24,9 +24,7 @@
 #include <variant>
 #include "DatabaseSerializer.h"
 #include "Exceptions.h"
-#include "BlockDatabase.h"
 #include "StreamDatabase.h"
-#include "VectorDatabase.h"
 #include "Database.h"
 
 

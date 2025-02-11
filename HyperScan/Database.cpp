@@ -35,7 +35,8 @@
 namespace HyperScan {
     Database::Database(const MultiPattern &mp, Mode mode) : _db(nullptr), _type(ExtractType(mode)) {
         std::vector<const char *> patterns;
-        for (const auto &pattern : mp._patterns) {
+        patterns.reserve(mp._patterns.size());
+		for (const auto &pattern : mp._patterns) {
             patterns.push_back(pattern.c_str());
         }
         hs_compile_error_t *error = nullptr;
@@ -56,7 +57,8 @@ namespace HyperScan {
 
     Database::Database(const MultiPattern &mp, Mode mode, const PlatformInfo &pi) : _db(nullptr), _type(ExtractType(mode)) {
         std::vector<const char *> patterns;
-        for (const auto &pattern : mp._patterns) {
+        patterns.reserve(mp._patterns.size());
+		for (const auto &pattern : mp._patterns) {
             patterns.push_back(pattern.c_str());
         }
         hs_compile_error_t *error = nullptr;
@@ -77,11 +79,13 @@ namespace HyperScan {
 
     Database::Database(const MultiPatternExtended &mpe, Mode mode) : _db(nullptr), _type(ExtractType(mode)) {
         std::vector<const char *> patterns;
-        for (const auto &pattern : mpe._patterns) {
+        patterns.reserve(mpe._patterns.size());
+		for (const auto &pattern : mpe._patterns) {
             patterns.push_back(pattern.c_str());
         }
         std::vector<const hs_expr_ext_t *> exts;
-        for (const auto &ext : mpe._exts) {
+        exts.reserve(mpe._exts.size());
+		for (const auto &ext : mpe._exts) {
             exts.push_back(ext.get());
         }
         hs_compile_error_t *error = nullptr;
@@ -102,11 +106,13 @@ namespace HyperScan {
 
     Database::Database(const MultiPatternExtended &mpe, Mode mode, const PlatformInfo &pi) : _db(nullptr), _type(ExtractType(mode)) {
         std::vector<const char *> patterns;
-        for (const auto &pattern : mpe._patterns) {
+        patterns.reserve(mpe._patterns.size());
+		for (const auto &pattern : mpe._patterns) {
             patterns.push_back(pattern.c_str());
         }
         std::vector<const hs_expr_ext_t *> exts;
-        for (const auto &ext : mpe._exts) {
+        exts.reserve(mpe._exts.size());
+		for (const auto &ext : mpe._exts) {
             exts.push_back(ext.get());
         }
         hs_compile_error_t *error = nullptr;
