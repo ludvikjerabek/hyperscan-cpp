@@ -158,8 +158,8 @@ jobs:
 
           cat << EOF > debian/libhyperscan-cpp-dev.install
           usr/include/hyperscan-cpp/*
-          usr/lib/*/libhyperscan-cpp.so
-          usr/lib/*/cmake/hyperscan-cpp/*
+          usr/lib/libhyperscan-cpp.so
+          usr/lib/cmake/hyperscan-cpp/*
           EOF
 
           # Create the source format file
@@ -172,14 +172,14 @@ jobs:
           cd ../hyperscan-cpp-${VERSION}
           dpkg-buildpackage -us -uc
           mkdir -p ../packages
-          cp ../libhyperscan-cpp1_*.deb ../packages/
+          cp ../libhyperscan-cpp_*.deb ../packages/
           cp ../libhyperscan-cpp-dev_*.deb ../packages/
 
       - name: Test package installation
         run: |
           VERSION=${{ env.PACKAGE_VERSION }}
           cd ..
-          sudo dpkg -i packages/libhyperscan-cpp1_*.deb
+          sudo dpkg -i packages/libhyperscan-cpp_*.deb
           sudo dpkg -i packages/libhyperscan-cpp-dev_*.deb
 
       - name: Lint package
