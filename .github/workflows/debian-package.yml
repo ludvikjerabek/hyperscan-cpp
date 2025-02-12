@@ -118,7 +118,7 @@ jobs:
            libhyperscan-dev
           Standards-Version: 4.5.1
 
-          Package: libhyperscan-cpp1
+          Package: libhyperscan-cpp
           Architecture: any
           Depends: \${shlibs:Depends}, \${misc:Depends}, libhyperscan-dev
           Description: C++ wrapper for Hyperscan library
@@ -128,7 +128,7 @@ jobs:
           Package: libhyperscan-cpp-dev
           Architecture: any
           Section: libdevel
-          Depends: libhyperscan-cpp1 (= \${binary:Version}), \${misc:Depends}, libhyperscan-dev
+          Depends: libhyperscan-cpp (= \${binary:Version}), \${misc:Depends}, libhyperscan-dev
           Description: Development files for hyperscan-cpp
            A C++ wrapper library for Intel's Hyperscan regular expression matching engine.
            This package contains development files.
@@ -152,7 +152,7 @@ jobs:
 
           chmod +x debian/rules
 
-          cat << EOF > debian/libhyperscan-cpp1.install
+          cat << EOF > debian/libhyperscan-cpp.install
           usr/lib/*/libhyperscan-cpp.so.*
           EOF
 
