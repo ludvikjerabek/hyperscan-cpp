@@ -91,15 +91,6 @@ jobs:
            This package contains development files.
           EOF
 
-          # Create changelog with distribution-specific version
-          cat << EOF > debian/changelog
-          hyperscan-cpp (${{ env.PACKAGE_VERSION }}-1~${{ env.DISTRO_CODENAME }}) ${{ env.DISTRO_CODENAME }}; urgency=medium
-
-            * Release for ${{ matrix.ubuntu }}
-
-           -- Ludvik Jerabek <ludvikjerabek@users.noreply.github.com>  $(date -R)
-          EOF
-
           cat << EOF > debian/rules
           #!/usr/bin/make -f
           %:
@@ -109,20 +100,28 @@ jobs:
           	dh_auto_configure -- \
           		-DCMAKE_BUILD_TYPE=Release \
           		-DBUILD_SHARED_LIBS=ON \
-          		-DBUILD_STATIC_LIBS=OFF
+          		-DBUILD_STATIC_LIBS=OFF \
+          		-DCMAKE_INSTALL_PREFIX=/usr
+
+          override_dh_install:
+          	dh_install --sourcedir=debian/tmp
           EOF
 
           chmod +x debian/rules
 
           cat << EOF > debian/libhyperscan-cpp.install
-          usr/lib/*/libhyperscan-cpp.so.*
+          usr/lib/libhyperscan-cpp.so.*
           EOF
 
           cat << EOF > debian/libhyperscan-cpp-dev.install
           usr/include/hyperscan-cpp/*
-          usr/lib/*/libhyperscan-cpp.so
-          usr/lib/*/cmake/hyperscan-cpp/*
+          usr/lib/libhyperscan-cpp.so
+          usr/lib/cmake/hyperscan-cpp/*
           EOF
+
+          # Create the source format file
+          mkdir -p debian/source
+          echo "3.0 (quilt)" > debian/source/format
 
       - name: Build debian package
         run: |
