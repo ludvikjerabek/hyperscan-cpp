@@ -47,6 +47,7 @@ jobs:
       - name: Create debian package files
         run: |
           VERSION=${{ env.PACKAGE_VERSION }}
+          
           # Setup directory structure
           cd ..
           cp -r hyperscan-cpp hyperscan-cpp-${VERSION}
@@ -63,6 +64,49 @@ jobs:
           # Remove debian/compat if it exists
           rm -f debian/compat
 
+          # Create a proper changelog
+          cat << EOF > debian/changelog
+          hyperscan-cpp (${VERSION}-1~${{ env.DISTRO_CODENAME }}) ${{ env.DISTRO_CODENAME }}; urgency=medium
+
+            * Initial release
+            * C++ wrapper for Intel's Hyperscan regular expression matching engine
+
+           -- Ludvik Jerabek <ludvikjerabek@users.noreply.github.com>  $(date -R)
+          EOF
+
+          # Create a proper copyright file
+          cat << EOF > debian/copyright
+          Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+          Upstream-Name: hyperscan-cpp
+          Upstream-Contact: Ludvik Jerabek <ludvikjerabek@users.noreply.github.com>
+          Source: https://github.com/ludvikjerabek/hyperscan-cpp
+
+          Files: *
+          Copyright: 2024 Ludvik Jerabek <ludvikjerabek@users.noreply.github.com>
+          License: MIT
+           Permission is hereby granted, free of charge, to any person obtaining a copy
+           of this software and associated documentation files (the "Software"), to deal
+           in the Software without restriction, including without limitation the rights
+           to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+           copies of the Software, and to permit persons to whom the Software is
+           furnished to do so, subject to the following conditions:
+           .
+           The above copyright notice and this permission notice shall be included in all
+           copies or substantial portions of the Software.
+           .
+           THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+           IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+           FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+           AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+           LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+           OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+           SOFTWARE.
+
+          Files: debian/*
+          Copyright: 2024 Ludvik Jerabek <ludvikjerabek@users.noreply.github.com>
+          License: MIT
+          EOF
+
           # Replace default debian files with our versions
           cat << EOF > debian/control
           Source: hyperscan-cpp
@@ -74,7 +118,7 @@ jobs:
            libhyperscan-dev
           Standards-Version: 4.5.1
 
-          Package: libhyperscan-cpp
+          Package: libhyperscan-cpp1
           Architecture: any
           Depends: \${shlibs:Depends}, \${misc:Depends}, libhyperscan-dev
           Description: C++ wrapper for Hyperscan library
@@ -84,7 +128,7 @@ jobs:
           Package: libhyperscan-cpp-dev
           Architecture: any
           Section: libdevel
-          Depends: libhyperscan-cpp (= \${binary:Version}), \${misc:Depends}, libhyperscan-dev
+          Depends: libhyperscan-cpp1 (= \${binary:Version}), \${misc:Depends}, libhyperscan-dev
           Description: Development files for hyperscan-cpp
            A C++ wrapper library for Intel's Hyperscan regular expression matching engine.
            This package contains development files.
@@ -108,14 +152,14 @@ jobs:
 
           chmod +x debian/rules
 
-          cat << EOF > debian/libhyperscan-cpp.install
-          usr/lib/libhyperscan-cpp.so.*
+          cat << EOF > debian/libhyperscan-cpp1.install
+          usr/lib/*/libhyperscan-cpp.so.*
           EOF
 
           cat << EOF > debian/libhyperscan-cpp-dev.install
           usr/include/hyperscan-cpp/*
-          usr/lib/libhyperscan-cpp.so
-          usr/lib/cmake/hyperscan-cpp/*
+          usr/lib/*/libhyperscan-cpp.so
+          usr/lib/*/cmake/hyperscan-cpp/*
           EOF
 
           # Create the source format file
@@ -128,14 +172,14 @@ jobs:
           cd ../hyperscan-cpp-${VERSION}
           dpkg-buildpackage -us -uc
           mkdir -p ../packages
-          cp ../libhyperscan-cpp_*.deb ../packages/
+          cp ../libhyperscan-cpp1_*.deb ../packages/
           cp ../libhyperscan-cpp-dev_*.deb ../packages/
 
       - name: Test package installation
         run: |
           VERSION=${{ env.PACKAGE_VERSION }}
           cd ..
-          sudo dpkg -i packages/libhyperscan-cpp_*.deb
+          sudo dpkg -i packages/libhyperscan-cpp1_*.deb
           sudo dpkg -i packages/libhyperscan-cpp-dev_*.deb
 
       - name: Lint package
