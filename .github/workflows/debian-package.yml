@@ -105,30 +105,36 @@ jobs:
 
       - name: Build debian package
         run: |
+          VERSION=${{ env.PACKAGE_VERSION }}
+          cd ../hyperscan-cpp-${VERSION}
           dpkg-buildpackage -us -uc
-          mkdir -p packages
-          cp ../libhyperscan-cpp_*.deb packages/
-          cp ../libhyperscan-cpp-dev_*.deb packages/
+          mkdir -p ../packages
+          cp ../libhyperscan-cpp_*.deb ../packages/
+          cp ../libhyperscan-cpp-dev_*.deb ../packages/
 
       - name: Test package installation
         run: |
-          sudo dpkg -i packages/libhyperscan-cpp_*.deb
-          sudo dpkg -i packages/libhyperscan-cpp-dev_*.deb
+          VERSION=${{ env.PACKAGE_VERSION }}
+          cd ../hyperscan-cpp-${VERSION}
+          sudo dpkg -i ../packages/libhyperscan-cpp_*.deb
+          sudo dpkg -i ../packages/libhyperscan-cpp-dev_*.deb
 
       - name: Lint package
         run: |
-          lintian packages/*.deb
+          VERSION=${{ env.PACKAGE_VERSION }}
+          cd ../hyperscan-cpp-${VERSION}
+          lintian ../packages/*.deb
 
       - name: Upload packages as artifacts
         uses: actions/upload-artifact@v4
         with:
           name: debian-packages-${{ matrix.ubuntu }}
-          path: packages/*.deb
+          path: ../packages/*.deb
           retention-days: 90
 
       - name: Upload to Release
         uses: softprops/action-gh-release@v1
         with:
-          files: packages/*.deb
+          files: ../packages/*.deb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
