@@ -12,10 +12,13 @@ jobs:
         include:
           - ubuntu: 'ubuntu-20.04'
             codename: 'focal'
+            debhelper: '12'
           - ubuntu: 'ubuntu-22.04'
             codename: 'jammy'
+            debhelper: '13'
           - ubuntu: 'ubuntu-24.04'
             codename: 'noble'
+            debhelper: '13'
     runs-on: ${{ matrix.ubuntu }}
     defaults:
       run:
@@ -27,7 +30,15 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential dh-make devscripts lintian cmake libhyperscan-dev
+          sudo apt-get install -y \
+            build-essential \
+            dh-make \
+            devscripts \
+            lintian \
+            cmake \
+            libhyperscan-dev \
+            debhelper \
+            debhelper-compat
 
       - name: Set version
         run: |
@@ -57,7 +68,9 @@ jobs:
           Section: libs
           Priority: optional
           Maintainer: Ludvik Jerabek <ludvikjerabek@users.noreply.github.com>
-          Build-Depends: debhelper-compat (= 13), cmake, libhyperscan-dev
+          Build-Depends: debhelper-compat (= ${{ matrix.debhelper }}),
+           cmake,
+           libhyperscan-dev
           Standards-Version: 4.5.1
 
           Package: libhyperscan-cpp
@@ -108,6 +121,9 @@ jobs:
           usr/lib/*/libhyperscan-cpp.so
           usr/lib/*/cmake/hyperscan-cpp/*
           EOF
+
+          # Create debian/compat file
+          echo "${{ matrix.debhelper }}" > debian/compat
 
       - name: Build debian package
         run: |
