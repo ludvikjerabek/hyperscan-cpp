@@ -31,11 +31,21 @@ jobs:
           echo "PACKAGE_VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
           echo "DISTRO_CODENAME=${{ matrix.codename }}" >> $GITHUB_ENV
 
-      - name: Create debian package files
+      - name: Debug Directory Structure
         run: |
-          # Get into properly named directory
+          echo "Workspace: $GITHUB_WORKSPACE"
+          echo "Current directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la
+          echo "Parent directory contents:"
+          ls -la ..
+          echo "Package version: ${{ env.PACKAGE_VERSION }}"
+
+      - name: Create debian package files
+        working-directory: ${{ github.workspace }}
+        run: |
           VERSION=${{ env.PACKAGE_VERSION }}
-          cd ..
+          cd $GITHUB_WORKSPACE/..
           mv hyperscan-cpp hyperscan-cpp-${VERSION}
           cd hyperscan-cpp-${VERSION}
           
@@ -104,37 +114,41 @@ jobs:
           EOF
 
       - name: Build debian package
+        working-directory: ${{ github.workspace }}
         run: |
           VERSION=${{ env.PACKAGE_VERSION }}
-          cd ../hyperscan-cpp-${VERSION}
+          WORK_DIR="$GITHUB_WORKSPACE/.."
+          cd "$WORK_DIR/hyperscan-cpp-${VERSION}"
           dpkg-buildpackage -us -uc
-          mkdir -p ../packages
-          cp ../libhyperscan-cpp_*.deb ../packages/
-          cp ../libhyperscan-cpp-dev_*.deb ../packages/
+          mkdir -p "$WORK_DIR/packages"
+          cp "$WORK_DIR"/libhyperscan-cpp_*.deb "$WORK_DIR/packages/"
+          cp "$WORK_DIR"/libhyperscan-cpp-dev_*.deb "$WORK_DIR/packages/"
 
       - name: Test package installation
+        working-directory: ${{ github.workspace }}
         run: |
           VERSION=${{ env.PACKAGE_VERSION }}
-          cd ../hyperscan-cpp-${VERSION}
-          sudo dpkg -i ../packages/libhyperscan-cpp_*.deb
-          sudo dpkg -i ../packages/libhyperscan-cpp-dev_*.deb
+          WORK_DIR="$GITHUB_WORKSPACE/.."
+          sudo dpkg -i "$WORK_DIR/packages"/libhyperscan-cpp_*.deb
+          sudo dpkg -i "$WORK_DIR/packages"/libhyperscan-cpp-dev_*.deb
 
       - name: Lint package
+        working-directory: ${{ github.workspace }}
         run: |
           VERSION=${{ env.PACKAGE_VERSION }}
-          cd ../hyperscan-cpp-${VERSION}
-          lintian ../packages/*.deb
+          WORK_DIR="$GITHUB_WORKSPACE/.."
+          lintian "$WORK_DIR/packages"/*.deb
 
       - name: Upload packages as artifacts
         uses: actions/upload-artifact@v4
         with:
           name: debian-packages-${{ matrix.ubuntu }}
-          path: ../packages/*.deb
+          path: ${{ github.workspace }}/../packages/*.deb
           retention-days: 90
 
       - name: Upload to Release
         uses: softprops/action-gh-release@v1
         with:
-          files: ../packages/*.deb
+          files: ${{ github.workspace }}/../packages/*.deb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
