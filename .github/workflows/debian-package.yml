@@ -24,15 +24,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Debug Directory Structure
-        run: |
-          echo "PWD: $(pwd)"
-          echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
-          echo "Contents:"
-          ls -la
-          echo "Parent contents:"
-          ls -la ..
-
       - name: Install build dependencies
         run: |
           sudo apt-get update
@@ -46,18 +37,19 @@ jobs:
       - name: Create debian package files
         run: |
           VERSION=${{ env.PACKAGE_VERSION }}
-          mkdir -p packages
-          mv * packages/ || true
-          mv .git* packages/ || true
-          mv packages hyperscan-cpp-${VERSION}
           
-          # Create orig archive
-          tar czf hyperscan-cpp_${VERSION}.orig.tar.gz hyperscan-cpp-${VERSION}
-          
+          # Setup directory structure
+          cd ..
+          cp -r hyperscan-cpp hyperscan-cpp-${VERSION}
           cd hyperscan-cpp-${VERSION}
           
-          # Initialize debian directory - fixed package name
-          yes | dh_make --library -p "hyperscan-cpp_${VERSION}" --createorig
+          # Create orig archive
+          tar czf ../hyperscan-cpp_${VERSION}.orig.tar.gz .
+          
+          # Initialize debian directory with environment variables to avoid prompts
+          export DEBEMAIL="ludvikjerabek@users.noreply.github.com"
+          export DEBFULLNAME="Ludvik Jerabek"
+          dh_make --library --yes -p hyperscan-cpp_${VERSION}
 
           # Replace default debian files with our versions
           cat << EOF > debian/control
@@ -120,7 +112,7 @@ jobs:
       - name: Build debian package
         run: |
           VERSION=${{ env.PACKAGE_VERSION }}
-          cd hyperscan-cpp-${VERSION}
+          cd ../hyperscan-cpp-${VERSION}
           dpkg-buildpackage -us -uc
           mkdir -p ../packages
           cp ../libhyperscan-cpp_*.deb ../packages/
@@ -128,23 +120,27 @@ jobs:
 
       - name: Test package installation
         run: |
+          VERSION=${{ env.PACKAGE_VERSION }}
+          cd ..
           sudo dpkg -i packages/libhyperscan-cpp_*.deb
           sudo dpkg -i packages/libhyperscan-cpp-dev_*.deb
 
       - name: Lint package
         run: |
+          VERSION=${{ env.PACKAGE_VERSION }}
+          cd ..
           lintian packages/*.deb
 
       - name: Upload packages as artifacts
         uses: actions/upload-artifact@v4
         with:
           name: debian-packages-${{ matrix.ubuntu }}
-          path: packages/*.deb
+          path: ${{ github.workspace }}/../packages/*.deb
           retention-days: 90
 
       - name: Upload to Release
         uses: softprops/action-gh-release@v1
         with:
-          files: packages/*.deb
+          files: ${{ github.workspace }}/../packages/*.deb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
