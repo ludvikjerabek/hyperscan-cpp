@@ -37,8 +37,7 @@ jobs:
             lintian \
             cmake \
             libhyperscan-dev \
-            debhelper \
-            debhelper-compat
+            debhelper
 
       - name: Set version
         run: |
@@ -61,6 +60,9 @@ jobs:
           export DEBEMAIL="ludvikjerabek@users.noreply.github.com"
           export DEBFULLNAME="Ludvik Jerabek"
           dh_make --library --yes -p hyperscan-cpp_${VERSION}
+
+          # Remove debian/compat if it exists
+          rm -f debian/compat
 
           # Replace default debian files with our versions
           cat << EOF > debian/control
@@ -121,9 +123,6 @@ jobs:
           usr/lib/*/libhyperscan-cpp.so
           usr/lib/*/cmake/hyperscan-cpp/*
           EOF
-
-          # Create debian/compat file
-          echo "${{ matrix.debhelper }}" > debian/compat
 
       - name: Build debian package
         run: |
