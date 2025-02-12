@@ -153,7 +153,7 @@ jobs:
           chmod +x debian/rules
 
           cat << EOF > debian/libhyperscan-cpp.install
-          usr/lib/*/libhyperscan-cpp.so.*
+          usr/lib/libhyperscan-cpp.so.*
           EOF
 
           cat << EOF > debian/libhyperscan-cpp-dev.install
