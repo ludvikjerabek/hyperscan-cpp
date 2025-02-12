@@ -19,7 +19,7 @@ jobs:
     runs-on: ${{ matrix.ubuntu }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install build dependencies
         run: |
@@ -33,11 +33,17 @@ jobs:
 
       - name: Create debian package files
         run: |
+          # Get into properly named directory
+          VERSION=${{ env.PACKAGE_VERSION }}
+          cd ..
+          mv hyperscan-cpp hyperscan-cpp-${VERSION}
+          cd hyperscan-cpp-${VERSION}
+          
           # Create orig archive
-          tar czf ../hyperscan-cpp_${{ env.PACKAGE_VERSION }}.orig.tar.gz .
+          tar czf ../hyperscan-cpp_${VERSION}.orig.tar.gz .
           
           # Initialize debian directory
-          dh_make --library --yes --createorig
+          dh_make --library --yes --createorig -p hyperscan-cpp_${VERSION}
 
           # Replace default debian files with our versions
           cat << EOF > debian/control
@@ -118,6 +124,7 @@ jobs:
         with:
           name: debian-packages-${{ matrix.ubuntu }}
           path: packages/*.deb
+          retention-days: 90
 
       - name: Upload to Release
         uses: softprops/action-gh-release@v1
