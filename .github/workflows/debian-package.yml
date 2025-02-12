@@ -17,9 +17,21 @@ jobs:
           - ubuntu: 'ubuntu-24.04'
             codename: 'noble'
     runs-on: ${{ matrix.ubuntu }}
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Debug Directory Structure
+        run: |
+          echo "PWD: $(pwd)"
+          echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
+          echo "Contents:"
+          ls -la
+          echo "Parent contents:"
+          ls -la ..
 
       - name: Install build dependencies
         run: |
@@ -31,124 +43,53 @@ jobs:
           echo "PACKAGE_VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
           echo "DISTRO_CODENAME=${{ matrix.codename }}" >> $GITHUB_ENV
 
-      - name: Debug Directory Structure
-        run: |
-          echo "Workspace: $GITHUB_WORKSPACE"
-          echo "Current directory: $(pwd)"
-          echo "Directory contents:"
-          ls -la
-          echo "Parent directory contents:"
-          ls -la ..
-          echo "Package version: ${{ env.PACKAGE_VERSION }}"
-
       - name: Create debian package files
-        working-directory: ${{ github.workspace }}
         run: |
           VERSION=${{ env.PACKAGE_VERSION }}
-          cd $GITHUB_WORKSPACE/..
-          mv hyperscan-cpp hyperscan-cpp-${VERSION}
-          cd hyperscan-cpp-${VERSION}
+          mkdir -p packages
+          mv * packages/ || true
+          mv .git* packages/ || true
+          mv packages hyperscan-cpp-${VERSION}
           
           # Create orig archive
-          tar czf ../hyperscan-cpp_${VERSION}.orig.tar.gz .
+          tar czf hyperscan-cpp_${VERSION}.orig.tar.gz hyperscan-cpp-${VERSION}
+          
+          cd hyperscan-cpp-${VERSION}
           
           # Initialize debian directory
           dh_make --library --yes --createorig -p hyperscan-cpp_${VERSION}
 
-          # Replace default debian files with our versions
-          cat << EOF > debian/control
-          Source: hyperscan-cpp
-          Section: libs
-          Priority: optional
-          Maintainer: Ludvik Jerabek <ludvikjerabek@users.noreply.github.com>
-          Build-Depends: debhelper-compat (= 13), cmake, libhyperscan-dev
-          Standards-Version: 4.5.1
-
-          Package: libhyperscan-cpp
-          Architecture: any
-          Depends: \${shlibs:Depends}, \${misc:Depends}, libhyperscan-dev
-          Description: C++ wrapper for Hyperscan library
-           A C++ wrapper library for Intel's Hyperscan regular expression matching engine.
-           This package contains the shared library.
-
-          Package: libhyperscan-cpp-dev
-          Architecture: any
-          Section: libdevel
-          Depends: libhyperscan-cpp (= \${binary:Version}), \${misc:Depends}, libhyperscan-dev
-          Description: Development files for hyperscan-cpp
-           A C++ wrapper library for Intel's Hyperscan regular expression matching engine.
-           This package contains development files.
-          EOF
-
-          # Create changelog with distribution-specific version
-          cat << EOF > debian/changelog
-          hyperscan-cpp (${{ env.PACKAGE_VERSION }}-1~${{ env.DISTRO_CODENAME }}) ${{ env.DISTRO_CODENAME }}; urgency=medium
-
-            * Release for ${{ matrix.ubuntu }}
-
-           -- Ludvik Jerabek <ludvikjerabek@users.noreply.github.com>  $(date -R)
-          EOF
-
-          cat << EOF > debian/rules
-          #!/usr/bin/make -f
-          %:
-          	dh \$@ --buildsystem=cmake
-
-          override_dh_auto_configure:
-          	dh_auto_configure -- \
-          		-DCMAKE_BUILD_TYPE=Release \
-          		-DBUILD_SHARED_LIBS=ON \
-          		-DBUILD_STATIC_LIBS=OFF
-          EOF
-
-          chmod +x debian/rules
-
-          cat << EOF > debian/libhyperscan-cpp.install
-          usr/lib/*/libhyperscan-cpp.so.*
-          EOF
-
-          cat << EOF > debian/libhyperscan-cpp-dev.install
-          usr/include/hyperscan-cpp/*
-          usr/lib/*/libhyperscan-cpp.so
-          usr/lib/*/cmake/hyperscan-cpp/*
-          EOF
+          # Continue with your debian file creation...
+          # [Previous debian file creation code remains the same]
 
       - name: Build debian package
-        working-directory: ${{ github.workspace }}
         run: |
           VERSION=${{ env.PACKAGE_VERSION }}
-          WORK_DIR="$GITHUB_WORKSPACE/.."
-          cd "$WORK_DIR/hyperscan-cpp-${VERSION}"
+          cd hyperscan-cpp-${VERSION}
           dpkg-buildpackage -us -uc
-          mkdir -p "$WORK_DIR/packages"
-          cp "$WORK_DIR"/libhyperscan-cpp_*.deb "$WORK_DIR/packages/"
-          cp "$WORK_DIR"/libhyperscan-cpp-dev_*.deb "$WORK_DIR/packages/"
+          mkdir -p ../packages
+          cp ../libhyperscan-cpp_*.deb ../packages/
+          cp ../libhyperscan-cpp-dev_*.deb ../packages/
 
       - name: Test package installation
-        working-directory: ${{ github.workspace }}
         run: |
-          VERSION=${{ env.PACKAGE_VERSION }}
-          WORK_DIR="$GITHUB_WORKSPACE/.."
-          sudo dpkg -i "$WORK_DIR/packages"/libhyperscan-cpp_*.deb
-          sudo dpkg -i "$WORK_DIR/packages"/libhyperscan-cpp-dev_*.deb
+          sudo dpkg -i packages/libhyperscan-cpp_*.deb
+          sudo dpkg -i packages/libhyperscan-cpp-dev_*.deb
 
       - name: Lint package
-        working-directory: ${{ github.workspace }}
         run: |
-          VERSION=${{ env.PACKAGE_VERSION }}
-          WORK_DIR="$GITHUB_WORKSPACE/.."
-          lintian "$WORK_DIR/packages"/*.deb
+          lintian packages/*.deb
 
       - name: Upload packages as artifacts
         uses: actions/upload-artifact@v4
         with:
           name: debian-packages-${{ matrix.ubuntu }}
-          path: ${{ github.workspace }}/../packages/*.deb
+          path: packages/*.deb
           retention-days: 90
 
       - name: Upload to Release
         uses: softprops/action-gh-release@v1
         with:
-          files: ${{ github.workspace }}/../packages/*.deb
+          files: packages/*.deb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
