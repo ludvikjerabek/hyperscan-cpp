@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include "../HyperScan/HyperScan.h"
+#include <HyperScan.h>
 
 using namespace std;
 
