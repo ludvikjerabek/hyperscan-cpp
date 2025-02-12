@@ -1,0 +1,96 @@
+name: Build and Release Debian Package
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build_deb:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential dh-make devscripts lintian cmake libhs-dev
+
+      - name: Set version
+        run: echo "PACKAGE_VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+
+      - name: Create debian package files
+        run: |
+          # Create orig archive
+          tar czf ../hyperscan-cpp_${{ env.PACKAGE_VERSION }}.orig.tar.gz .
+          
+          # Initialize debian directory
+          dh_make --library --yes --createorig
+
+          # Replace default debian files with our versions
+          cat << EOF > debian/control
+          Source: hyperscan-cpp
+          Section: libs
+          Priority: optional
+          Maintainer: Your Name <your.email@example.com>
+          Build-Depends: debhelper-compat (= 13), cmake, libhs-dev
+          Standards-Version: 4.5.1
+
+          Package: libhyperscan-cpp
+          Architecture: any
+          Depends: \${shlibs:Depends}, \${misc:Depends}, libhs5
+          Description: C++ wrapper for Hyperscan library
+           A C++ wrapper library for Intel's Hyperscan regular expression matching engine.
+           This package contains the shared library.
+
+          Package: libhyperscan-cpp-dev
+          Architecture: any
+          Section: libdevel
+          Depends: libhyperscan-cpp (= \${binary:Version}), \${misc:Depends}, libhs-dev
+          Description: Development files for hyperscan-cpp
+           A C++ wrapper library for Intel's Hyperscan regular expression matching engine.
+           This package contains development files.
+          EOF
+
+          cat << EOF > debian/rules
+          #!/usr/bin/make -f
+          %:
+          	dh \$@ --buildsystem=cmake
+
+          override_dh_auto_configure:
+          	dh_auto_configure -- \
+          		-DCMAKE_BUILD_TYPE=Release \
+          		-DBUILD_SHARED_LIBS=ON \
+          		-DBUILD_STATIC_LIBS=OFF
+          EOF
+
+          chmod +x debian/rules
+
+          cat << EOF > debian/libhyperscan-cpp.install
+          usr/lib/*/libhyperscan-cpp.so.*
+          EOF
+
+          cat << EOF > debian/libhyperscan-cpp-dev.install
+          usr/include/hyperscan-cpp/*
+          usr/lib/*/libhyperscan-cpp.so
+          usr/lib/*/cmake/hyperscan-cpp/*
+          EOF
+
+      - name: Build debian package
+        run: |
+          dpkg-buildpackage -us -uc
+          mkdir -p packages
+          cp ../libhyperscan-cpp_*.deb packages/
+          cp ../libhyperscan-cpp-dev_*.deb packages/
+
+      - name: Upload packages as artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: debian-packages
+          path: packages/*.deb
+
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: packages/*.deb
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
