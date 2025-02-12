@@ -6,7 +6,18 @@ on:
 
 jobs:
   build_deb:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ubuntu: ['ubuntu-20.04', 'ubuntu-22.04', 'ubuntu-24.04']
+        include:
+          - ubuntu: 'ubuntu-20.04'
+            codename: 'focal'
+          - ubuntu: 'ubuntu-22.04'
+            codename: 'jammy'
+          - ubuntu: 'ubuntu-24.04'
+            codename: 'noble'
+    runs-on: ${{ matrix.ubuntu }}
+
     steps:
       - uses: actions/checkout@v3
 
@@ -16,7 +27,9 @@ jobs:
           sudo apt-get install -y build-essential dh-make devscripts lintian cmake libhs-dev
 
       - name: Set version
-        run: echo "PACKAGE_VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+        run: |
+          echo "PACKAGE_VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+          echo "DISTRO_CODENAME=${{ matrix.codename }}" >> $GITHUB_ENV
 
       - name: Create debian package files
         run: |
@@ -51,6 +64,15 @@ jobs:
            This package contains development files.
           EOF
 
+          # Create changelog with distribution-specific version
+          cat << EOF > debian/changelog
+          hyperscan-cpp (${{ env.PACKAGE_VERSION }}-1~${{ env.DISTRO_CODENAME }}) ${{ env.DISTRO_CODENAME }}; urgency=medium
+
+            * Release for ${{ matrix.ubuntu }}
+
+           -- Your Name <your.email@example.com>  $(date -R)
+          EOF
+
           cat << EOF > debian/rules
           #!/usr/bin/make -f
           %:
@@ -82,10 +104,19 @@ jobs:
           cp ../libhyperscan-cpp_*.deb packages/
           cp ../libhyperscan-cpp-dev_*.deb packages/
 
+      - name: Test package installation
+        run: |
+          sudo dpkg -i packages/libhyperscan-cpp_*.deb
+          sudo dpkg -i packages/libhyperscan-cpp-dev_*.deb
+
+      - name: Lint package
+        run: |
+          lintian packages/*.deb
+
       - name: Upload packages as artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: debian-packages
+          name: debian-packages-${{ matrix.ubuntu }}
           path: packages/*.deb
 
       - name: Upload to Release
