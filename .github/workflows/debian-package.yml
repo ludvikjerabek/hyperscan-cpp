@@ -47,7 +47,6 @@ jobs:
       - name: Create debian package files
         run: |
           VERSION=${{ env.PACKAGE_VERSION }}
-          
           # Setup directory structure
           cd ..
           cp -r hyperscan-cpp hyperscan-cpp-${VERSION}
