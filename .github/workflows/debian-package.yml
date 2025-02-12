@@ -149,12 +149,15 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: debian-packages-${{ matrix.ubuntu }}
-          path: ${{ github.workspace }}/../packages/*.deb
+          path: /home/runner/work/hyperscan-cpp/packages/*.deb
           retention-days: 90
+          if-no-files-found: warn
+          compression-level: 6
+          overwrite: false
 
       - name: Upload to Release
         uses: softprops/action-gh-release@v1
         with:
-          files: ${{ github.workspace }}/../packages/*.deb
+          files: /home/runner/work/hyperscan-cpp/packages/*.deb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
