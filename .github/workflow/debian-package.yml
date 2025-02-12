@@ -24,7 +24,7 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential dh-make devscripts lintian cmake libhs-dev
+          sudo apt-get install -y build-essential dh-make devscripts lintian cmake libhyperscan-dev
 
       - name: Set version
         run: |
@@ -44,13 +44,13 @@ jobs:
           Source: hyperscan-cpp
           Section: libs
           Priority: optional
-          Maintainer: Your Name <your.email@example.com>
-          Build-Depends: debhelper-compat (= 13), cmake, libhs-dev
+          Maintainer: Ludvik Jerabek <ludvikjerabek@users.noreply.github.com>
+          Build-Depends: debhelper-compat (= 13), cmake, libhyperscan-dev
           Standards-Version: 4.5.1
 
           Package: libhyperscan-cpp
           Architecture: any
-          Depends: \${shlibs:Depends}, \${misc:Depends}, libhs5
+          Depends: \${shlibs:Depends}, \${misc:Depends}, libhyperscan-dev
           Description: C++ wrapper for Hyperscan library
            A C++ wrapper library for Intel's Hyperscan regular expression matching engine.
            This package contains the shared library.
@@ -58,7 +58,7 @@ jobs:
           Package: libhyperscan-cpp-dev
           Architecture: any
           Section: libdevel
-          Depends: libhyperscan-cpp (= \${binary:Version}), \${misc:Depends}, libhs-dev
+          Depends: libhyperscan-cpp (= \${binary:Version}), \${misc:Depends}, libhyperscan-dev
           Description: Development files for hyperscan-cpp
            A C++ wrapper library for Intel's Hyperscan regular expression matching engine.
            This package contains development files.
@@ -70,7 +70,7 @@ jobs:
 
             * Release for ${{ matrix.ubuntu }}
 
-           -- Your Name <your.email@example.com>  $(date -R)
+           -- Ludvik Jerabek <ludvikjerabek@users.noreply.github.com>  $(date -R)
           EOF
 
           cat << EOF > debian/rules
